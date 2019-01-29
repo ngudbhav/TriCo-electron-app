@@ -18,3 +18,6 @@ cd excel-to-mysql-electron-app
 npm install
 npm start
 ```
+
+This app saves the previosuly entered information in the systems %APPDATA% directory so that the whole information is not typed again.
+NOTHING is collected by me. This app doesn't even establish connection to the internet. A fully standalone app.
