@@ -1,6 +1,10 @@
 # TriCo-electron-app
 This App Converts your correctly formatted Excel Spreadsheet to a specified table/collection in specified Database in MYSQL/MongoDB.
 
+![mysql.png](images/screenshots/mysql.png)
+
+![mongo.png](images/screenshots/mongo.png)
+
 # Excel Formats Supported
 Supported Excel formats are XLS/XLSX
 
