@@ -3,67 +3,76 @@
 <head>
 	<title>TriCO (Mysql)</title>
 	<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.min.css">
+	<style>
+		*{
+			font-size: 17px;
+		}
+	</style>
 </head>
 <body>
 	<div class="container-fluid">
-		<div class="modal fade" tabindex="-1" role="dialog" id="formLogin">
-			<div class="modal-dialog modal-dialog-centered" role="document">
-				<div class="modal-content">
-					<div class="modal-body" style="padding: 5%;">
-						<form enctype="multipart/form-data" style="border: 0.10px solid black;padding: 10%;">
-							<div class="form-group form-check form-check-inline">
-								<input type="checkbox" class="form-check-input" id="autoid" name="autoid">
-								<label class="form-check-label" for="autoid">Auto ID</label>
-							</div>
-							<div class="form-group form-check form-check-inline" onclick="checkCustom();">
-								<input type="checkbox" class="form-check-input" id="custom" name="custom">
-								<label class="form-check-label" for="custom">Custom Start-end</label>
-							</div>
-							<div id="customSE" style="display: none;">
-								<div class="form-group">
-									<label for="rowS">Starting Row</label>
-									<input type="text" id="rowS" placeholder="The Heading Row" class="form-control">
-								</div>
-								<div class="form-group">
-									<label for="rowE">Ending Row Number</label>
-									<input type="text" id="rowE" placeholder="Ending Row Number" class="form-control">
-								</div><div class="form-group">
-									<label for="colS">Starting Column</label>
-									<input type="text" id="colS" placeholder="Starting Column Number" class="form-control">
-								</div><div class="form-group">
-									<label for="colE">Ending Row column</label>
-									<input type="text" id="colE" placeholder="Ending Column Number" class="form-control">
-								</div>
-							</div>
-							<div class="form-group">
-								<label for="db">Enter the name of your existing DB</label>
-								<input type="text" id="db" placeholder="Created DB name" class="form-control">
-							</div>
-							<div class="form-group">
-								<label for="user">Enter the username of your MYSQL account</label>
-								<input type="text" id="user" placeholder="Username of DB" class="form-control">
-							</div>
-							<div class="form-group">
-								<label for="pass">Enter the password for the above MYSQL account</label>
-								<input type="password" id="pass" placeholder="Password of DB" class="form-control">
-							</div>
-							<div class="form-group">
-								<label for="table">Enter the desired table name</label>
-								<input type="text" id="table" placeholder="Table name" class="form-control">
-							</div>
-							<div class="form-group">
-								<label for="table">Upload a single excel file</label>
-								<input type="file" id="file" class="form-control">
-							</div>
-							<button type="submit" class="btn btn-primary">Submit</button>
-						</form>
-						<hr>
-						<div class="footer" style="display:none;">
-							<div class="progress">
-								<div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-							</div>
-							<label class="small"></label>
+		<div class="row">
+			<div class="col-12">
+				<br>
+				<form enctype="multipart/form-data" style="border: 0.10px solid black;padding: 10%;">
+					<center>
+						<div class="form-group form-check form-check-inline">
+							<input type="checkbox" class="form-check-input" id="autoid" name="autoid">
+							<label class="form-check-label" for="autoid">Auto ID</label>
 						</div>
+						<div class="form-group form-check form-check-inline" onclick="checkCustom();">
+							<input type="checkbox" class="form-check-input" id="custom" name="custom">
+							<label class="form-check-label" for="custom">Custom Start-end</label>
+						</div>
+					</center>
+					<div id="customSE" style="display: none;">
+						<div class="form-group">
+							<label for="rowS">Starting Row</label>
+							<input type="text" id="rowS" placeholder="The Heading Row" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="rowE">Ending Row Number</label>
+							<input type="text" id="rowE" placeholder="Ending Row Number" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="colS">Starting Column</label>
+							<input type="text" id="colS" placeholder="Starting Column Number" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="colE">Ending Row column</label>
+							<input type="text" id="colE" placeholder="Ending Column Number" class="form-control">
+						</div>
+					</div>
+						<div class="form-group">
+							<label for="db">Enter the name of your existing DB</label>
+							<input type="text" id="db" placeholder="Created DB name" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="user">Enter the username of your MYSQL account</label>
+							<input type="text" id="user" placeholder="Username of DB" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="pass">Enter the password for the above MYSQL account</label>
+							<input type="password" id="pass" placeholder="Password of DB" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="table">Enter the desired table name</label>
+							<input type="text" id="table" placeholder="Table name" class="form-control">
+						</div>
+						<div class="form-group">
+							<label for="table">Upload a single excel file</label>
+							<input type="file" id="file" class="form-control">
+						</div>
+						<center>
+							<button type="submit" class="btn btn-primary" style="width: 30%;">Submit</button>
+						</center>
+					</form>
+					<hr>
+					<div class="footer" style="display:none;">
+						<div class="progress">
+							<div class="progress-bar" role="progressbar" style="width: 0%;" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+						</div>
+						<label class="small"></label>
 					</div>
 				</div>
 			</div>
@@ -155,13 +164,7 @@
 		if(item == 'ER_TABLE_EXISTS_ERROR'){
 			$(".small").html('Table already exists!');
 		}
-		if(item>0 && item!=1){
-			$(".small").html('Inserting Records');
-			$(".progress-bar").css('width', item*100+'%');
-			$(".progress-bar").attr('aria-valuenow', item*100);
-			$(".progress-bar").html(Math.floor(item*100)+'%');
-		}
-		else if(item == 1){
+		else{
 			$(".small").html('Done!');
 			$(".progress-bar").css('width', 0);
 			$(".progress-bar").attr('aria-valuenow', 0);

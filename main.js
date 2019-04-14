@@ -1,56 +1,4 @@
-const {app, BrowserWindow, Menu, ipcMain, dialog, shell, nativeImage} = require('electron');
-if (handleSquirrelEvent(app)) {
-    return;
-}
-function handleSquirrelEvent(application) {
-	if (process.argv.length === 1) {
-		return false;
-	}
-	const ChildProcess = require('child_process');
-	const path = require('path');
-	const appFolder = path.resolve(process.execPath, '..');
-	const rootAtomFolder = path.resolve(appFolder, '..');
-	const updateDotExe = path.resolve(path.join(rootAtomFolder, 'Update.exe'));
-	const exeName = path.basename(process.execPath);
-	const spawn = function(command, args) {
-		let spawnedProcess, error;
-		try{
-			spawnedProcess = ChildProcess.spawn(command, args, {
-				detached: true
-			});
-		}catch (error) {}
-		return spawnedProcess;
-	};
-	const spawnUpdate = function(args) {
-		return spawn(updateDotExe, args);
-	};
-	const squirrelEvent = process.argv[1];
-	switch (squirrelEvent) {
-		case '--squirrel-install':
-		case '--squirrel-updated':
-            // Optionally do things such as:
-            // - Add your .exe to the PATH
-            // - Write to the registry for things like file associations and
-            //   explorer context menus
-            // Install desktop and start menu shortcuts
-            spawnUpdate(['--createShortcut', exeName]);
-            setTimeout(application.quit, 1000);
-            return true;
-        case '--squirrel-uninstall':
-            // Undo anything you did in the --squirrel-install and
-            // --squirrel-updated handlers
-            // Remove desktop and start menu shortcuts
-            spawnUpdate(['--removeShortcut', exeName]);
-            setTimeout(application.quit, 1000);
-            return true;
-        case '--squirrel-obsolete':
-            // This is called on the outgoing version of your app before
-            // we update to the new version - it's the opposite of
-            // --squirrel-updated
-            application.quit();
-            return true;
-    }
-};
+const {app, BrowserWindow, Menu, ipcMain, dialog, shell} = require('electron');
 var fs = require('fs');
 var excelToMYSQL = require('excel-to-mysql');
 var Datastore = require('nedb')
@@ -119,15 +67,24 @@ var menuTemplate = [
 	}
 ];
 function createWindow2(){
-	win2 = new BrowserWindow({width: 800, height: 800, icon: image});
+	win2 = new BrowserWindow({width: 530, height: 650, icon: image});
 	win2.loadFile('mongo.html');
 	win2.on('closed', function(){
 		win2 = null;
 	});
+	win2.webContents.on('did-finish-load', function(){
+		db2.find({}, function (err, docs) {
+			if(!err){
+				if(docs.length){
+					win2.webContents.send('startup', docs);
+				}
+			}
+		});
+	});
 	win.close();
 }
 function createWindow(){
-	win = new BrowserWindow({width: 800, height: 800, icon: image});
+	win = new BrowserWindow({width: 530, height: 800, icon: image});
 	win.loadFile('index.html');
 	if(win2){
 		win2.close();
@@ -137,8 +94,7 @@ function createWindow(){
 	});
 	win.webContents.on('did-finish-load', function(){
 		db.find({}, function (err, docs) {
-			if(err) throw err;
-			else{
+			if(!err){
 				if(docs.length){
 					win.webContents.send('startup', docs);
 				}
@@ -165,18 +121,19 @@ ipcMain.on('readXlsForMongo', function(e, item){
 	}
 	db2.remove({}, { multi: true });
 	db2.insert({table:item.table,db:item.db}, function(error, results){
-		if(error) throw error;
+		if(error){}
 		else{
 			console.log(results);
 		}
 	});
 	excelToMongoDB.covertToMongo(data, options, function(error, results){
 		if(error){
-			dialog.showErrorBox('Some Error occured!', error);
-			return;
+			if(error.errorLabels){
+				dialog.showErrorBox('Some Error occured!', 'There may be a connection error!');
+				return;
+			}
 		}
 		else{
-			console.log(results);
 			if(win2){
 				win2.webContents.send('progress', 1);
 				win2.setProgressBar(1);
@@ -205,12 +162,12 @@ ipcMain.on('readXls', function(e, item){
 		options.endCol = item.colE;
 	}
 	db.find({}, function (err, docs) {
-		if(err) throw err;
+		if(err){}
 		console.log(docs);
 	});
 	db.remove({}, { multi: true });
 	db.insert({user: item.user,table:item.table,db:item.db}, function(error, results){
-		if(error) throw error;
+		if(error){}
 		else{
 			console.log(results);
 		}
@@ -221,14 +178,10 @@ ipcMain.on('readXls', function(e, item){
 			return;
 		}
 		else{
-			console.log(results);
-		}
-	});
-	excelToMYSQL.progress.on('progress', function(data){
-		console.log(data);
-		if(win){
-			win.webContents.send('progress', data/100);
-			win.setProgressBar(data/100);
+			if(win){
+				win.webContents.send('progress', 1);
+				win.setProgressBar(1);
+			}
 		}
 	});
 });
