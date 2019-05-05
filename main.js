@@ -1,6 +1,7 @@
-const {app, BrowserWindow, Menu, ipcMain, dialog, shell} = require('electron');
-var fs = require('fs');
+const {app, BrowserWindow, ipcMain, dialog, shell} = require('electron');
+app.setAppUserModelId("TriCo-Dev");
 var excelToMYSQL = require('excel-to-mysql');
+const notifier = require('node-notifier');
 var Datastore = require('nedb')
 , db = new Datastore({ filename: app.getPath('appData')+'/excel-to-db/data/mysql/new.db'})
 , db2 = new Datastore({ filename: app.getPath('appData')+'/excel-to-db/data/mongo/new.db'});
@@ -15,80 +16,17 @@ if (process.platform === 'darwin') {
 else{
 	image = path.join(__dirname, 'images/logo.ico');
 }
-let win, win2, addWin;
-var menuTemplate = [
-	{
-		label: 'File',
-		submenu: [
-			{
-				label: 'Convert to MongoDB',
-				click: function(menuItem, BrowserWindow, event){
-					if(win){
-						createWindow2();
-					}
-				}
-			},
-			{
-				label: 'Convert to MySQL',
-				click: function(menuItem, BrowserWindow, event){
-					if(win2){
-						createWindow();
-					}
-				}
-			},
-			{
-				label: 'Close',
-				role: 'quit'
-			}
-		]
-	},
-	{
-		label: 'Help',
-		submenu: [
-			{
-				label: 'About',
-				click: function(menuItem, BrowserWindow, event){
-					dialog.showMessageBox(
-						{
-							type: 'info',
-							buttons:['Open Browser?', 'Close'],
-							title: 'Created By NGUdbhav',
-							detail: 'TriCO stands for Tri-Covertor. This app converts excel to mysql/mongodb data. Visit me! www.ngudbhav.me',
-
-						}
-					, function(response){
-						if(response === 0){
-							shell.openExternal('https://www.ngudbhav.me');
-						}
-					});
-				}
-			}
-		]
-	}
-];
-function createWindow2(){
-	win2 = new BrowserWindow({width: 530, height: 650, icon: image});
-	win2.loadFile('mongo.html');
-	win2.on('closed', function(){
-		win2 = null;
-	});
-	win2.webContents.on('did-finish-load', function(){
-		db2.find({}, function (err, docs) {
-			if(!err){
-				if(docs.length){
-					win2.webContents.send('startup', docs);
-				}
-			}
-		});
-	});
-	win.close();
-}
+let win;
+/*
+Updater
+*/
 function createWindow(){
-	win = new BrowserWindow({width: 530, height: 800, icon: image});
+	win = new BrowserWindow({width: 1000, height: 600, icon: image, webPreferences: {
+		nodeIntegration: true
+	}, frame: false });
 	win.loadFile('index.html');
-	if(win2){
-		win2.close();
-	}
+	win.removeMenu()
+	win.webContents.openDevTools();
 	win.on('closed', function(){
 		win = null;
 	});
@@ -96,14 +34,20 @@ function createWindow(){
 		db.find({}, function (err, docs) {
 			if(!err){
 				if(docs.length){
-					win.webContents.send('startup', docs);
+					win.webContents.send('startupMySQL', docs);
+					db2.find({}, function(err, docs){
+						if(!err){
+							if(docs.length){
+								win.webContents.send('startupMongoDB', docs);
+							}
+						}
+					});
 				}
 			}
 		});
 	});
-	var menuBuild = Menu.buildFromTemplate(menuTemplate);
-	Menu.setApplicationMenu(menuBuild);
 }
+
 ipcMain.on('readXlsForMongo', function(e, item){
 	var data = {
 		host: "localhost",
@@ -134,10 +78,19 @@ ipcMain.on('readXlsForMongo', function(e, item){
 			}
 		}
 		else{
-			if(win2){
-				win2.webContents.send('progress', 1);
-				win2.setProgressBar(1);
-			}
+			win.webContents.send('progress', 1);
+			win.setProgressBar(1);
+			notifier.notify(
+			{
+				title: 'Sent to MongoDB',
+				message: 'Coversion to mongo completed successfully. Click to send Feedback.',
+				icon: 'images/logo.png',
+				sound: true,
+				wait:true
+			});
+			notifier.on('click', function(notifierObject, options) {
+				shell.openExternal('https://www.softpedia.com/get/Internet/Servers/Database-Utils/TriCO.shtml');
+			});
 		}
 	});
 });
@@ -181,13 +134,21 @@ ipcMain.on('readXls', function(e, item){
 			if(win){
 				win.webContents.send('progress', 1);
 				win.setProgressBar(1);
+				notifier.notify(
+				{
+					title: 'Sent to MySQL',
+					message: 'Coversion to mysql completed successfully. Click to send Feedback.',
+					icon: 'images/logo.png',
+					sound: true,
+					wait:true
+				});
+				notifier.on('click', function(notifierObject, options) {
+					shell.openExternal('https://www.softpedia.com/get/Internet/Servers/Database-Utils/TriCO.shtml');
+				});
 			}
 		}
 	});
 });
-if(process.platform==='darwin'){
-	menuTemplate.unshift({});
-}
 app.on('ready', createWindow);
 app.on('window-all-closed', function(){
 	if(process.platform!=='darwin'){

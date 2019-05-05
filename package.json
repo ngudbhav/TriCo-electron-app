@@ -13,13 +13,13 @@
   "license": "MIT",
   "dependencies": {
     "bootstrap": "^4.3.1",
-    "electron": "^3.0.0",
+    "custom-electron-titlebar": "^3.0.8",
+    "electron": "^5.0.1",
     "excel-to-mongodb": "^1.1.1",
     "excel-to-mysql": "^2.0.0",
-    "jquery": "^3.3.1",
-    "mysql": "^2.16.0",
+    "jquery": "^3.4.1",
     "nedb": "^1.8.0",
-    "popper.js": "^1.15.0",
-    "read-excel-file": "^2.0.2"
+    "node-notifier": "^5.4.0",
+    "popper.js": "^1.15.0"
   }
 }
