@@ -9,6 +9,7 @@ db.loadDatabase();
 db2.loadDatabase();
 var path = require('path');
 var excelToMongoDB = require('excel-to-mongodb');
+var request = require('request');
 let image;
 if (process.platform === 'darwin') {
 	image = path.join(__dirname, 'images/logo.icns');
@@ -16,7 +17,7 @@ if (process.platform === 'darwin') {
 else{
 	image = path.join(__dirname, 'images/logo.ico');
 }
-let win;
+let win, updateWin;
 /*
 Updater
 */
@@ -45,6 +46,27 @@ function createWindow(){
 				}
 			}
 		});
+	});
+	request('https://api.github.com/repos/ngudbhav/TriCo-electron-app/releases/latest', {headers: {'User-Agent':'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:59.0) Gecko/20100101 '}}, function(error, html, body){
+		if(!error){
+			var v = app.getVersion().replace(' ', '');
+			var latestV = JSON.parse(body).tag_name.replace('v', '');
+			var changeLog = JSON.parse(body).body.replace('<strong>Changelog</strong>', 'Update available. Here are the changes:\n');
+			if(latestV!=v){
+				dialog.showMessageBox(
+					{
+						type: 'info',
+						buttons:['Open Browser to download link', 'Close'],
+						title: 'Update Available',
+						detail: changeLog,
+					}, function(response){
+						if(response === 0){
+							shell.openExternal('https://github.com/ngudbhav/TriCo-electron-app/releases/latest');
+						}
+					}
+				);
+			}
+		}
 	});
 }
 

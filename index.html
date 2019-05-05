@@ -16,7 +16,6 @@
 			-webkit-appearance:none !important;
 			box-shadow: 0px 0px 0px 0px !important;
 		}
-
 	</style>
 </head>
 <body>
@@ -152,7 +151,7 @@
 			</div>
 		</div>
 		<div class="row" style="position: fixed;left: 0;bottom: 0;background-color: #E8EBEF;width:100%;z-index:3;cursor: default;">
-			<div class="col-2" ondblclick="aboutWindow();">
+			<div class="col-2">
 				<h6>
 					<center>NGUdbhav</center>
 				</h6>
@@ -234,6 +233,7 @@
 			alert('No file choosen!');
 		}
 		else{
+			console.log(inf.files);
 			$(".small").html('Establishing connection and creating table');
 			$(".footer").show();
 			var autoid;
@@ -247,7 +247,7 @@
 				db: $("#ydb").val(),
 				user: $("#yuser").val(),
 				pass: $("#ypass").val(),
-				path: inf.files[0].path,
+				path: inf.files,
 				table: $("#ytable").val(),
 				autoid: autoid
 			};
@@ -266,7 +266,7 @@
 				}
 			}
 			console.log(item);
-			ipcRenderer.send('readXls', item);
+			//ipcRenderer.send('readXls', item);
 		}
 	});
 	$("#mform").on("submit", function(e){
