@@ -233,7 +233,10 @@
 			alert('No file choosen!');
 		}
 		else{
-			console.log(inf.files);
+			var pathArray = [];
+			for(var i=0;i<inf.files.length;i++){
+				pathArray.push(inf.files[i].path);
+			}
 			$(".small").html('Establishing connection and creating table');
 			$(".footer").show();
 			var autoid;
@@ -247,7 +250,7 @@
 				db: $("#ydb").val(),
 				user: $("#yuser").val(),
 				pass: $("#ypass").val(),
-				path: inf.files,
+				path: pathArray,
 				table: $("#ytable").val(),
 				autoid: autoid
 			};
@@ -266,7 +269,7 @@
 				}
 			}
 			console.log(item);
-			//ipcRenderer.send('readXls', item);
+			ipcRenderer.send('readXls', item);
 		}
 	});
 	$("#mform").on("submit", function(e){
