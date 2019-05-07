@@ -24,7 +24,6 @@ function createWindow(){
 	}, frame: false });
 	win.loadFile('index.html');
 	win.removeMenu();
-	win.openDevTools();
 	win.on('closed', function(){
 		win = null;
 	});
