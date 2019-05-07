@@ -1,5 +1,5 @@
 const {app, BrowserWindow, ipcMain, dialog, shell} = require('electron');
-app.setAppUserModelId("TriCo-Dev");
+app.setAppUserModelId(process.execPath);
 var excelToMYSQL = require('excel-to-mysql');
 const notifier = require('node-notifier');
 var Datastore = require('nedb')
@@ -44,6 +44,9 @@ function createWindow(){
 			}
 		});
 	});
+	checkUpdates();
+}
+function checkUpdates(e){
 	request('https://api.github.com/repos/ngudbhav/TriCo-electron-app/releases/latest', {headers: {'User-Agent':'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:59.0) Gecko/20100101 '}}, function(error, html, body){
 		if(!error){
 			var v = app.getVersion().replace(' ', '');
@@ -74,16 +77,35 @@ function createWindow(){
 					shell.openExternal('https://github.com/ngudbhav/TriCo-electron-app/releases/latest');
 				});
 			}
+			else{
+				if(e === 'f'){
+					dialog.showMessageBox({
+						type: 'info',
+						buttons:['Close'],
+						title: 'No update available!',
+						detail: 'You already have the latest version installed.'
+					});
+				}
+			}
+		}
+		else{
+			if(e === 'f'){
+				dialog.showMessageBox({
+					type: 'error',
+					buttons:['Close'],
+					title: 'Update check failed!',
+					detail: 'Failed to connect to the update server. Please check your internet connection'
+				});
+			}
 		}
 	});
 }
+ipcMain.on('update', function(e, item){
+	checkUpdates('f');
+});
 ipcMain.on('readXlsForMongo', function(e, item){
-	var data = {
-		host: "localhost",
-		path: item.path,
-		collection: item.table,
-		db: item.db
-	};
+	var count = 0;
+	var pathArray = item.path;
 	var options = {};
 	if(item.customStartEnd){
 		options.customStartEnd = true;
@@ -96,43 +118,42 @@ ipcMain.on('readXlsForMongo', function(e, item){
 	db2.insert({table:item.table,db:item.db}, function(error, results){
 		if(error){}
 		else{
-			console.log(results);
 		}
 	});
-	excelToMongoDB.covertToMongo(data, options, function(error, results){
-		if(error){
-			if(error.errorLabels){
-				dialog.showErrorBox('Some Error occured!', 'There may be a connection error!');
-				return;
+	let i = 0;
+	while(i<pathArray.length){
+		excelToMongoDB.covertToMongo({host: "localhost",path: pathArray[i],collection: item.table,db: item.db}, options, function(error, results){
+			if(error){
+				if(error.errorLabels){
+					dialog.showErrorBox('Some Error occured!', 'There may be a connection error!');
+					return;
+				}
 			}
-		}
-		else{
-			win.webContents.send('progress', 1);
-			win.setProgressBar(1);
-			notifier.notify(
-			{
-				title: 'Sent to MongoDB',
-				message: 'Coversion to mongo completed successfully. Click to send Feedback.',
-				icon: 'images/logo.png',
-				sound: true,
-				wait:true
-			});
-			notifier.on('click', function(notifierObject, options) {
-				shell.openExternal('https://www.softpedia.com/get/Internet/Servers/Database-Utils/TriCO.shtml');
-			});
-		}
-	});
+			else{
+				win.webContents.send('progress', i/pathArray.length);
+				win.setProgressBar(i/pathArray.length);
+				if(i===pathArray.length && count===0){
+					count = 1;
+					notifier.notify(
+					{
+						title: 'Sent to MongoDB',
+						message: 'Coversion to mongo completed successfully. Click to send Feedback.',
+						icon: 'images/logo.png',
+						sound: true,
+						wait:true
+					});
+					notifier.on('click', function(notifierObject, options) {
+						shell.openExternal('https://www.softpedia.com/get/Internet/Servers/Database-Utils/TriCO.shtml');
+					});
+				}
+			}
+		});
+		i++;
+	}
 });
 ipcMain.on('readXls', function(e, item){
+	var count = 0;
 	var pathArray = item.path;
-	var data = {
-		host: "localhost",
-		user: item.user,
-		pass: item.pass,
-		path: item.path,
-		table: item.table,
-		db: item.db
-	};
 	var options = {};
 	if(item.autoid){
 		options.autoId = true;
@@ -151,15 +172,9 @@ ipcMain.on('readXls', function(e, item){
 	db.remove({}, { multi: true });
 	db.insert({user: item.user,table:item.table,db:item.db}, function(error, results){
 		if(error){}
-		else{
-			
-		}
 	});
 	let i = 0;
 	while(i<pathArray.length){
-		console.log(i);
-		data.path = pathArray[i];
-		console.log(data.path);
 		excelToMYSQL.covertToMYSQL({host: "localhost",user: item.user,pass: item.pass,path: pathArray[i],table: item.table,db: item.db}, options, function(error, results){
 			if(error){
 				dialog.showErrorBox('Some Error occured!', error);
@@ -167,27 +182,27 @@ ipcMain.on('readXls', function(e, item){
 			}
 			else{
 				if(win){
-					//console.log(data);
-					console.log(i);
 					win.webContents.send('progress', i/pathArray.length);
 					win.setProgressBar(i/pathArray.length);
-					/*notifier.notify(
-					{
-						title: 'Sent to MySQL',
-						message: 'Coversion to mysql completed successfully. Click to send Feedback.',
-						icon: 'images/logo.png',
-						sound: true,
-						wait:true
-					});
-					notifier.on('click', function(notifierObject, options) {
-						shell.openExternal('https://www.softpedia.com/get/Internet/Servers/Database-Utils/TriCO.shtml');
-					});*/
+					if(i===pathArray.length && count === 0){
+						count = 1;
+						notifier.notify(
+						{
+							title: 'Sent to MySQL',
+							message: 'Coversion to mysql completed successfully. Click to send Feedback.',
+							icon: 'images/logo.png',
+							sound: true,
+							wait:true
+						});
+						notifier.on('click', function(notifierObject, options) {
+							shell.openExternal('https://www.softpedia.com/get/Internet/Servers/Database-Utils/TriCO.shtml');
+						});
+					}
 				}
 			}
 		});
 		i++;
 	}
-	/**/
 });
 app.on('ready', createWindow);
 app.on('window-all-closed', function(){

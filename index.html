@@ -134,7 +134,7 @@
 					</div>
 					<div class="form-group">
 						<label for="mfile">Upload a single excel file</label>
-						<input type="file" id="mfile" class="form-control">
+						<input type="file" id="mfile" class="form-control" multiple>
 					</div>
 					<center>
 						<button type="submit" class="btn btn-primary" style="width:30%;">Submit</button>
@@ -156,7 +156,7 @@
 					<center>NGUdbhav</center>
 				</h6>
 			</div>
-			<div class="col-4 offset-2">
+			<div class="col-4 offset-2" onclick="checkUpdates();">
 				<h6>
 					<center>
 						<a style="cursor:pointer;">Check for updates</a>
@@ -176,6 +176,9 @@
 	window.Bootstrap = require('bootstrap');
 	$("#mongo").hide();
 	$("button:eq(0)").css('backgroundColor', 'rgb(21, 98, 181)');
+	function checkUpdates(){
+		ipcRenderer.send('update', 'null');
+	}
 	function switchWindow(e){
 		if(e == 'mysql'){
 			$('#mysql').animate({
@@ -280,11 +283,15 @@
 			alert('No file choosen!');
 		}
 		else{
+			var pathArray = [];
+			for(var i=0;i<inf.files.length;i++){
+				pathArray.push(inf.files[i].path);
+			}
 			$(".small").html('Establishing connection and creating table');
 			$(".footer").show();
 			var item = {
 				db: $("#mdb").val(),
-				path: inf.files[0].path,
+				path: pathArray,
 				table: $("#mtable").val(),
 			};
 			if($("#mongo-check").is(":checked")){
