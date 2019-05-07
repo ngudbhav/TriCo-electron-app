@@ -23,5 +23,19 @@ npm install
 npm start
 ```
 
-This app saves the previosuly entered information in the systems %APPDATA% directory so that the whole information is not typed again.
-NOTHING is collected by me. This app doesn't even establish connection to the internet. A fully standalone app.
+# Installing The App
+```sh
+Setup.exe => Full Windows install
+Portable.exe => Unzip and run the exe.
+Setup.deb => Installable on Debian distributions (Ubuntu, Kali, etc.)
+Setup.rpm => Installable on Red Hat distributions (Fedora, etc.) 
+```
+
+# Software Featured on Softpedia and Electronjs
+<a href="https://www.softpedia.com/get/Internet/Servers/Database-Utils/TriCO.shtml">Softpedia Link</a>
+<a href="https://electronjs.org/apps/trico">Electronjs Link</a>
+
+# Do rate and give Feedback!
+
+P.S. This app saves the previosuly entered information in the systems %APPDATA% directory so that the whole information is not typed again.
+NOTHING is collected by me. Also, this app establishes connection to the internet to check for the updates.
