@@ -8,6 +8,8 @@
 
 This App Converts your correctly formatted Excel Spreadsheet to a specified table/collection in specified Database in MYSQL/MongoDB.
 
+## Do checkout the upcoming features in CHANGELOG.md
+
 ![mysql.png](images/screenshots/mysql.png)
 
 ![mongo.png](images/screenshots/mongo.png)
