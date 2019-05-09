@@ -1,5 +1,4 @@
 const {app, BrowserWindow, ipcMain, dialog, shell} = require('electron');
-app.setAppUserModelId(process.execPath);
 var excelToMYSQL = require('excel-to-mysql');
 const notifier = require('node-notifier');
 var Datastore = require('nedb')
@@ -12,10 +11,10 @@ var excelToMongoDB = require('excel-to-mongodb');
 var request = require('request');
 let image;
 if (process.platform === 'darwin') {
-	image = path.join(__dirname, 'images/logo.icns');
+	image = path.join(__dirname, 'images', 'logo.icns');
 }
 else{
-	image = path.join(__dirname, 'images/logo.ico');
+	image = path.join(__dirname, 'images', 'logo.ico');
 }
 let win;
 function createWindow(){
@@ -66,9 +65,10 @@ function checkUpdates(e){
 				);
 				notifier.notify(
 				{
+					appName: "NGUdbhav.TriCo",
 					title: 'Update Available',
 					message: 'A new version is available. Click to open browser and download.',
-					icon: 'images/logo.png',
+					icon: path.join(__dirname, 'images', 'logo.ico'),
 					sound: true,
 					wait:true
 				});
@@ -135,9 +135,10 @@ ipcMain.on('readXlsForMongo', function(e, item){
 					count = 1;
 					notifier.notify(
 					{
+						appName: "NGUdbhav.TriCo",
 						title: 'Sent to MongoDB',
 						message: 'Coversion to mongo completed successfully. Click to send Feedback.',
-						icon: 'images/logo.png',
+						icon: path.join(__dirname, 'images', 'logo.ico'),
 						sound: true,
 						wait:true
 					});
@@ -187,9 +188,10 @@ ipcMain.on('readXls', function(e, item){
 						count = 1;
 						notifier.notify(
 						{
+							appName: "NGUdbhav.TriCo",
 							title: 'Sent to MySQL',
 							message: 'Coversion to mysql completed successfully. Click to send Feedback.',
-							icon: 'images/logo.png',
+							icon: path.join(__dirname, 'images', 'logo.ico'),
 							sound: true,
 							wait:true
 						});
@@ -203,7 +205,10 @@ ipcMain.on('readXls', function(e, item){
 		i++;
 	}
 });
-app.on('ready', createWindow);
+app.on('ready', ()=>{
+	createWindow();
+	if (process.platform === 'win32') {app.setAppUserModelId('NGUdbhav.TriCo');}
+});
 app.on('window-all-closed', function(){
 	if(process.platform!=='darwin'){
 		app.quit();

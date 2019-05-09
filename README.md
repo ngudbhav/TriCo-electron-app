@@ -4,6 +4,7 @@
 [![Dependencies](https://img.shields.io/david/ngudbhav/TriCo-electron-app.svg)](https://github.com/ngudbhav/TriCo-electron-app/blob/master/package.json)
 [![Downloads](https://img.shields.io/github/downloads/ngudbhav/TriCo-electron-app/total.svg)](https://github.com/ngudbhav/TriCo-electron-app/releases)
 [![Last-Release](https://img.shields.io/github/release-date/ngudbhav/TriCo-electron-app.svg)](https://github.com/ngudbhav/TriCo-electron-app/releases)
+[![Platforms](https://img.shields.io/badge/platform-win%20%7C%20deb%20%7C%20rpm-green.svg)](https://github.com/ngudbhav/TriCo-electron-app/releases)
 
 This App Converts your correctly formatted Excel Spreadsheet to a specified table/collection in specified Database in MYSQL/MongoDB.
 
