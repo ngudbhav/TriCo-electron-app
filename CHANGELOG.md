@@ -8,6 +8,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Safe mode which will backup the db before process
 - Ability to create database from app itself
 - Ability to execute SQL/Mongo queries after process
+- Compare and add the differences into the database
 - My Earning Source (Donation System :p) (App will remain free forever)
 
 ## [2.5.1] - 2017-05-07
