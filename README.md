@@ -41,7 +41,7 @@ Setup.rpm => Installable on Red Hat distributions (Fedora, etc.)
 ```
 
 # Software Featured on Softpedia and Electronjs
-<a href="https://www.softpedia.com/get/Internet/Servers/Database-Utils/TriCO.shtml">Softpedia Link</a>
+<a href="https://www.softpedia.com/get/Internet/Servers/Database-Utils/TriCO.shtml"><img src="images/soft.png" alt="Softpedia" /></a>
 <a href="https://electronjs.org/apps/trico">Electronjs Link</a>
 
 # Do rate and give Feedback!

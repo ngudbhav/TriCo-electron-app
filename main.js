@@ -3,9 +3,11 @@ var excelToMYSQL = require('excel-to-mysql');
 const notifier = require('node-notifier');
 var Datastore = require('nedb')
 , db = new Datastore({ filename: app.getPath('appData')+'/excel-to-db/data/mysql/new.db'})
-, db2 = new Datastore({ filename: app.getPath('appData')+'/excel-to-db/data/mongo/new.db'});
+, db2 = new Datastore({ filename: app.getPath('appData')+'/excel-to-db/data/mongo/new.db'})
+, history = new Datastore({filename: app.getPath('appData')+'/excel-to-db/data/history/new.db'});
 db.loadDatabase();
 db2.loadDatabase();
+history.loadDatabase();
 var path = require('path');
 var excelToMongoDB = require('excel-to-mongodb');
 var request = require('request');
@@ -22,7 +24,8 @@ function createWindow(){
 		nodeIntegration: true
 	}, frame: false });
 	win.loadFile('index.html');
-	win.removeMenu();
+	win.setMenu(null);
+	win.openDevTools();
 	win.on('closed', function(){
 		win = null;
 	});
@@ -35,6 +38,13 @@ function createWindow(){
 						if(!err){
 							if(docs.length){
 								win.webContents.send('startupMongoDB', docs);
+								history.find({}, function(err, docs){
+									if(!err){
+										if(docs.length){
+											win.webContents.send('startupHistory', docs);
+										}
+									}
+								});
 							}
 						}
 					});

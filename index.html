@@ -22,14 +22,19 @@
 	<div class="container-fluid">
 		<br>
 		<div class="row">
-			<div class="col-6">
+			<div class="col-4">
 				<center>
 					<button type="button" class="btn btn-primary" style="width: 30%;" onclick="switchWindow('mysql');">MySQL</button>
 				</center>
 			</div>
-			<div class="col-6">
+			<div class="col-4">
 				<center>
 					<button type="button" class="btn btn-primary" style="width: 30%;" onclick="switchWindow('mongo');">MongoDB</button>
+				</center>
+			</div>
+			<div class="col-4">
+				<center>
+					<button type="button" class="btn btn-primary" style="width: 30%;" onclick="switchWindow('history');">History</button>
 				</center>
 			</div>
 			<div class="col-12" id="mysql">
@@ -149,6 +154,10 @@
 					<br><br>
 				</div>
 			</div>
+			<div class="col-12">
+				<br>
+
+			</div>
 		</div>
 		<div class="row" style="position: fixed;left: 0;bottom: 0;background-color: #E8EBEF;width:100%;z-index:3;cursor: default;">
 			<div class="col-2">
@@ -187,8 +196,12 @@
 			$('#mongo').animate({
 				height: 'hide'
 			});
+			$('#history').animate({
+				height: 'hide'
+			});
 			$("button:eq(0)").css('backgroundColor', 'rgb(21, 98, 181)');
 			$("button:eq(1)").css('backgroundColor', '#0069d9');
+			$("button:eq(2)").css('backgroundColor', '#0069d9');
 		}
 		else if(e == 'mongo'){
 			$('#mongo').animate({
@@ -197,8 +210,26 @@
 			$('#mysql').animate({
 				height: 'hide'
 			});
+			$('#history').animate({
+				height: 'hide'
+			});
 			$("button:eq(1)").css('backgroundColor', 'rgb(21, 98, 181)');
 			$("button:eq(0)").css('backgroundColor', '#0069d9');
+			$("button:eq(2)").css('backgroundColor', '#0069d9');
+		}
+		else if(e == 'history'){
+			$('#history').animate({
+				height: 'show'
+			});
+			$('#mysql').animate({
+				height: 'hide'
+			});
+			$('#mongo').animate({
+				height: 'hide'
+			});
+			$("button:eq(2)").css('backgroundColor', 'rgb(21, 98, 181)');
+			$("button:eq(0)").css('backgroundColor', '#0069d9');
+			$("button:eq(1)").css('backgroundColor', '#0069d9');
 		}
 	}
 	function checkCustom(e){
@@ -321,8 +352,10 @@
 		$("#mdb").val(item[0].db);
 		$("#mtable").val(item[0].table);
 	});
-	ipcRenderer.on('progress', function(e, item){
+	ipcRenderer.on('startupHistory', function(e, item){
 		console.log(item);
+	});
+	ipcRenderer.on('progress', function(e, item){
 		$("#status").html('<center>Ready</center>');
 		if(item == 'ER_BAD_DB_ERROR'){
 			$(".small").html('DB Not found!');
