@@ -24,23 +24,27 @@
 		<div class="row">
 			<div class="col-4">
 				<center>
-					<button type="button" class="btn btn-primary" style="width: 30%;" onclick="switchWindow('mysql');">MySQL</button>
+					<button type="button" class="btn btn-primary" onclick="switchWindow('mysql');">MySQL</button>
 				</center>
 			</div>
 			<div class="col-4">
 				<center>
-					<button type="button" class="btn btn-primary" style="width: 30%;" onclick="switchWindow('mongo');">MongoDB</button>
+					<button type="button" class="btn btn-primary" onclick="switchWindow('mongo');">MongoDB</button>
 				</center>
 			</div>
 			<div class="col-4">
 				<center>
-					<button type="button" class="btn btn-primary" style="width: 30%;" onclick="switchWindow('history');">History</button>
+					<button type="button" class="btn btn-primary" onclick="switchWindow('history');">History</button>
 				</center>
 			</div>
 			<div class="col-12" id="mysql">
 				<br>
 				<form enctype="multipart/form-data" style="border: 0.10px solid black;padding: 10%;box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);" id="yform">
 					<center>
+						<div class="form-group form-check form-check-inline">
+							<input type="checkbox" class="form-check-input" id="safe" name="safe">
+							<label class="form-check-label" for="safe">Use Safe mode (Affects Speed)</label>
+						</div>
 						<div class="form-group form-check form-check-inline">
 							<input type="checkbox" class="form-check-input" id="autoid" name="autoid">
 							<label class="form-check-label" for="autoid">Auto ID</label>
@@ -88,9 +92,18 @@
 							<label for="yfile">Upload a single excel file</label>
 							<input type="file" id="yfile" class="form-control" multiple>
 						</div>
-						<center>
-							<button type="submit" class="btn btn-primary" style="width: 30%;">Submit</button>
-						</center>
+						<div class="row">
+							<div class="col-6">
+								<center>
+									<button type="submit" class="btn btn-primary" id="yformsubmit">Save to Database</button>
+								</center>
+							</div>
+							<div class="col-6">
+								<center>
+									<button type="submit" class="btn btn-primary">Save to a file</button>
+								</center>
+							</div>
+						</div>
 					</form>
 					<hr>
 					<div class="footer" style="display:none;">
@@ -106,6 +119,10 @@
 				<br>
 				<form enctype="multipart/form-data" style="border: 0.10px solid black;padding: 10%;box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);" id="mform">
 					<center>
+						<div class="form-group form-check form-check-inline">
+							<input type="checkbox" class="form-check-input" id="msafe" name="safe">
+							<label class="form-check-label" for="msafe">Use Safe mode (Affects Speed)</label>
+						</div>
 						<div class="form-group form-check form-check-inline" onclick="checkCustom('mongo');">
 							<input type="checkbox" class="form-check-input" id="mongo-check" name="custom">
 							<label class="form-check-label" for="mongo-check">Custom Start-end</label>
@@ -154,9 +171,20 @@
 					<br><br>
 				</div>
 			</div>
-			<div class="col-12">
+			<div class="col-12" id="history">
 				<br>
-
+				<form enctype="multipart/form-data" style="border: 0.10px solid black;padding: 2%;box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);" id="mform">
+					<center>
+						<h6>Get the pointer over to see the date and time.</h6>
+					</center>
+					<div class="list-group" id="historydb">
+						
+					</div>
+					<br>
+					<center>
+						<button type="button" class="btn btn-primary" style="width:30%;" onclick="ipcRenderer.send('clearHistory', null)">Clear History</button>
+					</center>
+				</form>
 			</div>
 		</div>
 		<div class="row" style="position: fixed;left: 0;bottom: 0;background-color: #E8EBEF;width:100%;z-index:3;cursor: default;">
@@ -166,14 +194,14 @@
 				</h6>
 			</div>
 			<div class="col-4 offset-2" onclick="checkUpdates();">
-				<h6>
+				<h6 data-toggle="tooltip" data-placement="top" title="Check for updates">
 					<center>
-						<a style="cursor:pointer;">Check for updates</a>
+						<a style="cursor:pointer;" id="updates">Connecting...</a>
 					</center>
 				</h6>
 			</div>
 			<div class="col-1 offset-3">
-				<h6 id="status">
+				<h6 id="status" data-toggle="tooltip" data-placement="top" title="Current Status">
 					<center>Idle</center>
 				</h6>
 			</div>
@@ -183,9 +211,12 @@
 <script>
 	window.$ = window.jQuery = require('jquery');
 	window.Bootstrap = require('bootstrap');
+	$('[data-toggle="tooltip"]').tooltip();
 	$("#mongo").hide();
+	$("#history").hide();
 	$("button:eq(0)").css('backgroundColor', 'rgb(21, 98, 181)');
 	function checkUpdates(){
+		$("#updates").html('Connecting...');
 		ipcRenderer.send('update', 'null');
 	}
 	function switchWindow(e){
@@ -246,6 +277,9 @@
 			$(".mongo").hide();
 		}
 	}
+	function restore(e){
+		var id = $(e).attr('data-id');
+	}
 </script>
 <script>
 	$(document).ready(function(){
@@ -259,7 +293,7 @@
 	});
 	var electron = require('electron');
 	var {ipcRenderer} = electron;
-	$("#yform").on("submit", function(e){
+	$("#yformsubmit").on("click", function(e){
 		$("#status").html('<center>Busy</center>');
 		e.preventDefault();
 		var inf = $("#yfile")[0];
@@ -274,11 +308,18 @@
 			$(".small").html('Establishing connection and creating table');
 			$(".footer").show();
 			var autoid;
+			var safeMode;
 			if($("#autoid").is(":checked")){
 				autoid = true;
 			}
 			else{
 				autoid = false;
+			}
+			if($("#safe").is(":checked")){
+				safeMode = true;
+			}
+			else{
+				safeMode = false;
 			}
 			var item = {
 				db: $("#ydb").val(),
@@ -286,7 +327,8 @@
 				pass: $("#ypass").val(),
 				path: pathArray,
 				table: $("#ytable").val(),
-				autoid: autoid
+				autoid: autoid,
+				safeMode:safeMode
 			};
 			if($("#mysql-check").is(":checked")){
 				item.customStartEnd = true;
@@ -325,6 +367,9 @@
 				path: pathArray,
 				table: $("#mtable").val(),
 			};
+			if($("#msafe").is(':checked')){
+				item.safeMode = true;
+			}
 			if($("#mongo-check").is(":checked")){
 				item.customStartEnd = true;
 				item.rowS = $("#mrowS").val();
@@ -353,7 +398,20 @@
 		$("#mtable").val(item[0].table);
 	});
 	ipcRenderer.on('startupHistory', function(e, item){
+		var history = '';
+		for(let i in item){
+			if(item[i].destination == 'SQL'){
+				history+='<a class="list-group-item list-group-item-action list-group-item-primary d-flex justify-content-between align-items-center" title = "'+new Date(item[i].time)+'" ondblclick="restore(this);" data-id="'+item[i]._id+'">Table '+item[i].table+'<br>'+JSON.stringify(item[i].files)+'<span class="badge badge-primary badge-pill">'+item[i].destination+'</span></a><br>';
+			}
+			else{
+				history+='<a class="list-group-item list-group-item-action list-group-item-success d-flex justify-content-between align-items-center" title = "'+new Date(item[i].time)+'" ondblclick="restore(this);" data-id="'+item[i]._id+'">Table '+item[i].table+'<br>'+JSON.stringify(item[i].files)+'<span class="badge badge-success badge-pill">'+item[i].destination+'</span></a><br>';
+			}
+		}
+		$("#historydb").html(history);
 		console.log(item);
+	});
+	ipcRenderer.on('updateCheckup', function(e, item){
+		$("#updates").html('Check for updates');
 	});
 	ipcRenderer.on('progress', function(e, item){
 		$("#status").html('<center>Ready</center>');

@@ -15,7 +15,7 @@ This App Converts your correctly formatted Excel Spreadsheet to a specified tabl
 ![mongo.png](images/screenshots/mongo.png)
 
 # Excel Formats Supported
-Supported Excel formats are XLS/XLSX
+Supported Excel formats are XLS/XLSX/CSV
 
 # Usage
 The Database must already be there. A table name should be provided.
@@ -26,7 +26,7 @@ Please have a look at the sample Excel sheets provided to have a clear view of t
 # Starting The App
 ```sh
 sudo npm install -g electron
-git clone https://github.com/ngudbhav/excel-to-mysql-electron-app.git
+git clone https://github.com/ngudbhav/TriCo-electron-app.git
 cd excel-to-mysql-electron-app
 npm install
 npm start
@@ -41,7 +41,7 @@ Setup.rpm => Installable on Red Hat distributions (Fedora, etc.)
 ```
 
 # Software Featured on Softpedia and Electronjs
-<a href="https://www.softpedia.com/get/Internet/Servers/Database-Utils/TriCO.shtml"><img src="images/soft.png" alt="Softpedia" /></a>
+<a href="https://www.softpedia.com/get/Internet/Servers/Database-Utils/TriCO.shtml"><img src="images/soft.png" alt="Softpedia" /></a><br><br>
 <a href="https://electronjs.org/apps/trico">Electronjs Link</a>
 
 # Do rate and give Feedback!

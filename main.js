@@ -4,10 +4,10 @@ const notifier = require('node-notifier');
 var Datastore = require('nedb')
 , db = new Datastore({ filename: app.getPath('appData')+'/excel-to-db/data/mysql/new.db'})
 , db2 = new Datastore({ filename: app.getPath('appData')+'/excel-to-db/data/mongo/new.db'})
-, history = new Datastore({filename: app.getPath('appData')+'/excel-to-db/data/history/new.db'});
+, historydb = new Datastore({filename: app.getPath('appData')+'/excel-to-db/data/history/new.db'});
 db.loadDatabase();
 db2.loadDatabase();
-history.loadDatabase();
+historydb.loadDatabase();
 var path = require('path');
 var excelToMongoDB = require('excel-to-mongodb');
 var request = require('request');
@@ -38,7 +38,7 @@ function createWindow(){
 						if(!err){
 							if(docs.length){
 								win.webContents.send('startupMongoDB', docs);
-								history.find({}, function(err, docs){
+								historydb.find({}, function(err, docs){
 									if(!err){
 										if(docs.length){
 											win.webContents.send('startupHistory', docs);
@@ -96,6 +96,7 @@ function checkUpdates(e){
 					});
 				}
 			}
+			win.webContents.send('updateCheckup', null);
 		}
 		else{
 			if(e === 'f'){
@@ -106,16 +107,34 @@ function checkUpdates(e){
 					detail: 'Failed to connect to the update server. Please check your internet connection'
 				});
 			}
+			win.webContents.send('updateCheckup', null);
 		}
 	});
 }
 ipcMain.on('update', function(e, item){
 	checkUpdates('f');
 });
+ipcMain.on('clearHistory', function(e, item){
+	dialog.showMessageBox(
+		{
+			type: 'info',
+			buttons:['Yes', 'No'],
+			title: 'Clear everything?',
+			detail: 'This will clear the records. The data backups won\'t be removed. You can remove the backups manually in the installation directory.',
+		}, function(response){
+			if(response === 0){
+				historydb.remove({}, {multi:true});
+			}
+		}
+	);
+});
 ipcMain.on('readXlsForMongo', function(e, item){
 	var count = 0;
 	var pathArray = item.path;
 	var options = {};
+	if(item.safeMode){
+		options.safeMode = true;
+	}
 	if(item.customStartEnd){
 		options.customStartEnd = true;
 		options.startRow = item.rowS;
@@ -128,6 +147,9 @@ ipcMain.on('readXlsForMongo', function(e, item){
 		if(error){}
 		else{
 		}
+	});
+	historydb.insert({table:item.table,db:item.db, files: pathArray, time: new Date(), destination:'MONGO'}, function(error, results){
+		if(error){}
 	});
 	let i = 0;
 	while(i<pathArray.length){
@@ -143,6 +165,12 @@ ipcMain.on('readXlsForMongo', function(e, item){
 				win.setProgressBar(i/pathArray.length);
 				if(i===pathArray.length && count===0){
 					count = 1;
+					dialog.showMessageBox({
+						type: 'info',
+						buttons:['Close'],
+						title: 'Success',
+						detail: 'Operation Completed Successfully!'
+					});
 					notifier.notify(
 					{
 						appName: "NGUdbhav.TriCo",
@@ -168,6 +196,9 @@ ipcMain.on('readXls', function(e, item){
 	if(item.autoid){
 		options.autoId = true;
 	}
+	if(item.safeMode){
+		options.safeMode = true;
+	}
 	if(item.customStartEnd){
 		options.customStartEnd = true;
 		options.startRow = item.rowS;
@@ -184,6 +215,9 @@ ipcMain.on('readXls', function(e, item){
 		if(error){}
 	});
 	let i = 0;
+	historydb.insert({table:item.table,db:item.db, files: pathArray, time: new Date(), destination:'SQL'}, function(error, results){
+		if(error){}
+	});
 	while(i<pathArray.length){
 		excelToMYSQL.covertToMYSQL({host: "localhost",user: item.user,pass: item.pass,path: pathArray[i],table: item.table,db: item.db}, options, function(error, results){
 			if(error){
@@ -196,6 +230,12 @@ ipcMain.on('readXls', function(e, item){
 					win.setProgressBar(i/pathArray.length);
 					if(i===pathArray.length && count === 0){
 						count = 1;
+						dialog.showMessageBox({
+							type: 'info',
+							buttons:['Close'],
+							title: 'Success',
+							detail: 'Operation Completed Successfully!'
+						});
 						notifier.notify(
 						{
 							appName: "NGUdbhav.TriCo",
