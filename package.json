@@ -8,8 +8,10 @@
     "pack": "electron-builder --dir",
     "dist": "electron-builder",
     "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=images/logo.icns --prune=true --out=release-builds",
-    "package-win": "electron-packager . TriCo --overwrite --asar=true --platform=win32 --arch=ia32 --icon=images/logo.ico --prune=true --out=release-builds --version-string.CompanyName=NGUdbhav --version-string.FileDescription=Application --version-string.ProductName=\"TriCo\"",
-    "package-linux": "electron-packager . TriCo --overwrite --asar=true --platform=linux --arch=x64 --icon=images/logo.ico --prune=true --out=release-builds"
+    "package-win": "electron-packager . TriCo --overwrite --asar=true --platform=win32 --arch=x64 --icon=images/logo.ico --prune=true --out=release-builds --version-string.CompanyName=NGUdbhav --version-string.FileDescription=Application --version-string.ProductName=\"TriCo\"",
+    "package-linux": "electron-packager . TriCo --overwrite --asar=true --platform=linux --arch=x64 --icon=images/logo.ico --prune=true --out=release-builds",
+    "install-redhat": "electron-installer-redhat --src release-builds/TriCo-linux-x64/ --dest dist/installers/ --arch x86_64",
+    "install-debian": "electron-installer-debian --src release-builds/TriCo-linux-x64/ --dest dist/installers/ --arch amd64"
   },
   "build": {
     "appId": "NGUdbhav.TriCo",
@@ -41,6 +43,7 @@
     "electron": "^5.0.1",
     "electron-builder": "^20.39.0",
     "electron-installer-debian": "^1.2.0",
-    "electron-installer-redhat": "^1.1.0"
+    "electron-installer-redhat": "^1.1.0",
+    "electron-packager": "^14.0.0"
   }
 }

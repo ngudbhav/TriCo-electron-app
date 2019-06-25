@@ -5,11 +5,22 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## Upcoming
-- Safe mode which will backup the db before process
 - Ability to create database from app itself
 - Ability to execute SQL/Mongo queries after process
 - Compare and add the differences into the database
-- My Earning Source (Donation System :p) (App will remain free forever)
+- <del>My Earning Source (Donation System :p) (App will remain free forever)</del>
+
+## [2.6.1] - 2017-06-25
+### Added
+- New History maintainance.
+- Safe Mode which backs up the db before process.
+- Write to file mode.
+- Locks tables for better sync (mysql).
+- Clear history button.
+
+### Changed
+- Error Handling.
+- Bug Fixes.
 
 ## [2.5.1] - 2017-05-07
 ### Added
