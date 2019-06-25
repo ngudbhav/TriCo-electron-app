@@ -25,7 +25,6 @@ function createWindow(){
 	}, frame: false });
 	win.loadFile('index.html');
 	win.setMenu(null);
-	win.openDevTools();
 	win.on('closed', function(){
 		win = null;
 	});
@@ -41,6 +40,10 @@ function createWindow(){
 								historydb.find({}, function(err, docs){
 									if(!err){
 										if(docs.length){
+											docs.sort(function (a, b) {
+												return a.time - b.time;
+											});
+											console.log(docs);
 											win.webContents.send('startupHistory', docs);
 										}
 									}
@@ -219,40 +222,78 @@ ipcMain.on('readXls', function(e, item){
 		if(error){}
 	});
 	while(i<pathArray.length){
-		excelToMYSQL.covertToMYSQL({host: "localhost",user: item.user,pass: item.pass,path: pathArray[i],table: item.table,db: item.db}, options, function(error, results){
-			if(error){
-				dialog.showErrorBox('Some Error occured!', error);
-				return;
-			}
-			else{
-				if(win){
-					win.webContents.send('progress', i/pathArray.length);
-					win.setProgressBar(i/pathArray.length);
-					if(i===pathArray.length && count === 0){
-						count = 1;
-						dialog.showMessageBox({
-							type: 'info',
-							buttons:['Close'],
-							title: 'Success',
-							detail: 'Operation Completed Successfully!'
-						});
-						notifier.notify(
-						{
-							appName: "NGUdbhav.TriCo",
-							title: 'Sent to MySQL',
-							message: 'Coversion to mysql completed successfully. Click to send Feedback.',
-							icon: path.join(__dirname, 'images', 'logo.ico'),
-							sound: true,
-							wait:true
-						});
-						notifier.on('click', function(notifierObject, options) {
-							shell.openExternal('https://www.softpedia.com/get/Internet/Servers/Database-Utils/TriCO.shtml');
-						});
+		if(item.fileConvertCheck){
+			excelToMYSQL.convertToFile({path: pathArray[i], table:item.table, db:item.db}, options, function(error, results){
+				if(error){
+					dialog.showErrorBox('Some Error occured!', error);
+					return;
+				}
+				else{
+					if(win){
+						win.webContents.send('progress', i/pathArray.length);
+						win.setProgressBar(i/pathArray.length);
+						if(i===pathArray.length && count === 0){
+							count = 1;
+							dialog.showMessageBox({
+								type: 'info',
+								buttons:['Close'],
+								title: 'Success',
+								detail: 'Operation Completed Successfully!'
+							});
+							notifier.notify(
+							{
+								appName: "NGUdbhav.TriCo",
+								title: 'Sent to File',
+								message: 'Coversion to File completed successfully. Click to send Feedback.',
+								icon: path.join(__dirname, 'images', 'logo.ico'),
+								sound: true,
+								wait:true
+							});
+							notifier.on('click', function(notifierObject, options) {
+								shell.openExternal('https://www.softpedia.com/get/Internet/Servers/Database-Utils/TriCO.shtml');
+							});
+						}
 					}
 				}
-			}
-		});
-		i++;
+			});
+			i++;
+		}
+		else{
+			excelToMYSQL.covertToMYSQL({host: "localhost",user: item.user,pass: item.pass,path: pathArray[i],table: item.table,db: item.db}, options, function(error, results){
+				if(error){
+					dialog.showErrorBox('Some Error occured!', error);
+					return;
+				}
+				else{
+					if(win){
+						win.webContents.send('progress', i/pathArray.length);
+						win.setProgressBar(i/pathArray.length);
+						if(i===pathArray.length && count === 0){
+							count = 1;
+							dialog.showMessageBox({
+								type: 'info',
+								buttons:['Close'],
+								title: 'Success',
+								detail: 'Operation Completed Successfully!'
+							});
+							notifier.notify(
+							{
+								appName: "NGUdbhav.TriCo",
+								title: 'Sent to MySQL',
+								message: 'Coversion to mysql completed successfully. Click to send Feedback.',
+								icon: path.join(__dirname, 'images', 'logo.ico'),
+								sound: true,
+								wait:true
+							});
+							notifier.on('click', function(notifierObject, options) {
+								shell.openExternal('https://www.softpedia.com/get/Internet/Servers/Database-Utils/TriCO.shtml');
+							});
+						}
+					}
+				}
+			});
+			i++;
+		}
 	}
 });
 app.on('ready', ()=>{

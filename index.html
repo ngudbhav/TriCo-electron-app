@@ -41,9 +41,13 @@
 				<br>
 				<form enctype="multipart/form-data" style="border: 0.10px solid black;padding: 10%;box-shadow: 0 6px 20px 0 rgba(0, 0, 0, 0.19);" id="yform">
 					<center>
-						<div class="form-group form-check form-check-inline">
+						<div class="form-group form-check form-check-inline creds">
 							<input type="checkbox" class="form-check-input" id="safe" name="safe">
 							<label class="form-check-label" for="safe">Use Safe mode (Affects Speed)</label>
+						</div>
+						<div class="form-group form-check form-check-inline" onclick="fileConvert();">
+							<input type="checkbox" class="form-check-input" id="fileConvert" name="fileConvert">
+							<label class="form-check-label" for="fileConvert">Covert to File only</label>
 						</div>
 						<div class="form-group form-check form-check-inline">
 							<input type="checkbox" class="form-check-input" id="autoid" name="autoid">
@@ -76,13 +80,15 @@
 							<label for="ydb">Enter the name of your existing DB</label>
 							<input type="text" id="ydb" placeholder="Created DB name" class="form-control">
 						</div>
-						<div class="form-group">
-							<label for="yuser">Enter the username of your MYSQL account</label>
-							<input type="text" id="yuser" placeholder="Username of DB" class="form-control">
-						</div>
-						<div class="form-group">
-							<label for="ypass">Enter the password for the above MYSQL account</label>
-							<input type="password" id="ypass" placeholder="Password of DB" class="form-control">
+						<div class="creds">
+							<div class="form-group">
+								<label for="yuser">Enter the username of your MYSQL account</label>
+								<input type="text" id="yuser" placeholder="Username of DB" class="form-control">
+							</div>
+							<div class="form-group">
+								<label for="ypass">Enter the password for the above MYSQL account</label>
+								<input type="password" id="ypass" placeholder="Password of DB" class="form-control">
+							</div>
 						</div>
 						<div class="form-group">
 							<label for="ytable">Enter the desired table name</label>
@@ -93,14 +99,9 @@
 							<input type="file" id="yfile" class="form-control" multiple>
 						</div>
 						<div class="row">
-							<div class="col-6">
+							<div class="col-12">
 								<center>
 									<button type="submit" class="btn btn-primary" id="yformsubmit">Save to Database</button>
-								</center>
-							</div>
-							<div class="col-6">
-								<center>
-									<button type="submit" class="btn btn-primary">Save to a file</button>
 								</center>
 							</div>
 						</div>
@@ -185,6 +186,7 @@
 						<button type="button" class="btn btn-primary" style="width:30%;" onclick="ipcRenderer.send('clearHistory', null)">Clear History</button>
 					</center>
 				</form>
+				<br><br>
 			</div>
 		</div>
 		<div class="row" style="position: fixed;left: 0;bottom: 0;background-color: #E8EBEF;width:100%;z-index:3;cursor: default;">
@@ -219,6 +221,7 @@
 		$("#updates").html('Connecting...');
 		ipcRenderer.send('update', 'null');
 	}
+	var fileConvertCheck=0;
 	function switchWindow(e){
 		if(e == 'mysql'){
 			$('#mysql').animate({
@@ -277,6 +280,16 @@
 			$(".mongo").hide();
 		}
 	}
+	function fileConvert(){
+		if($("#fileConvert").is(":checked")){
+			$(".creds").hide();
+			fileConvertCheck = 1;
+		}
+		else{
+			$(".creds").show();
+			fileConvertCheck = 0;
+		}
+	}
 	function restore(e){
 		var id = $(e).attr('data-id');
 	}
@@ -328,7 +341,8 @@
 				path: pathArray,
 				table: $("#ytable").val(),
 				autoid: autoid,
-				safeMode:safeMode
+				safeMode:safeMode,
+				fileConvertCheck:fileConvertCheck
 			};
 			if($("#mysql-check").is(":checked")){
 				item.customStartEnd = true;
@@ -404,7 +418,7 @@
 				history+='<a class="list-group-item list-group-item-action list-group-item-primary d-flex justify-content-between align-items-center" title = "'+new Date(item[i].time)+'" ondblclick="restore(this);" data-id="'+item[i]._id+'">Table '+item[i].table+'<br>'+JSON.stringify(item[i].files)+'<span class="badge badge-primary badge-pill">'+item[i].destination+'</span></a><br>';
 			}
 			else{
-				history+='<a class="list-group-item list-group-item-action list-group-item-success d-flex justify-content-between align-items-center" title = "'+new Date(item[i].time)+'" ondblclick="restore(this);" data-id="'+item[i]._id+'">Table '+item[i].table+'<br>'+JSON.stringify(item[i].files)+'<span class="badge badge-success badge-pill">'+item[i].destination+'</span></a><br>';
+				history+='<a class="list-group-item list-group-item-action list-group-item-success d-flex justify-content-between align-items-center" title = "'+new Date(item[i].time)+'" ondblclick="restore(this);" data-id="'+item[i]._id+'">Collection '+item[i].table+'<br>'+JSON.stringify(item[i].files)+'<span class="badge badge-success badge-pill">'+item[i].destination+'</span></a><br>';
 			}
 		}
 		$("#historydb").html(history);
