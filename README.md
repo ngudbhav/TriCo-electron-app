@@ -1,6 +1,6 @@
 # TriCo-electron-app
 
-[![Release](https://img.shields.io/badge/Release-2.5.1-green.svg)](https://github.com/ngudbhav/TriCo-electron-app/releases)
+[![Release](https://img.shields.io/badge/Release-2.6.1-green.svg)](https://github.com/ngudbhav/TriCo-electron-app/releases)
 [![Dependencies](https://img.shields.io/david/ngudbhav/TriCo-electron-app.svg)](https://github.com/ngudbhav/TriCo-electron-app/blob/master/package.json)
 [![Downloads](https://img.shields.io/github/downloads/ngudbhav/TriCo-electron-app/total.svg)](https://github.com/ngudbhav/TriCo-electron-app/releases)
 [![Last-Release](https://img.shields.io/github/release-date/ngudbhav/TriCo-electron-app.svg)](https://github.com/ngudbhav/TriCo-electron-app/releases)
