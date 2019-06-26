@@ -27,7 +27,7 @@ Please have a look at the sample Excel sheets provided to have a clear view of t
 ```sh
 sudo npm install -g electron
 git clone https://github.com/ngudbhav/TriCo-electron-app.git
-cd excel-to-mysql-electron-app
+cd TriCo-electron-app
 npm install
 npm start
 ```
