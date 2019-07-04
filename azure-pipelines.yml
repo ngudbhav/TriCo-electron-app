@@ -16,7 +16,7 @@ steps:
   displayName: 'Install Node.js'
 
 - script: |
-    sudo npm install -g electron
+    npm install -g electron
     npm install
     npm start
   displayName: 'npm install and electron'
