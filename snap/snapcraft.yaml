@@ -7,7 +7,7 @@
     This App Converts your correctly formatted Excel Spreadsheet to a specified table/collection in specified Database in     MYSQL/MongoDB.This app saves the previosuly entered information in the systems directory so that the whole information is not typed again. Feattures such as history maintainance, safe-mode, file mode etc. make this app a great choice.
 
   grade: stable # must be 'stable' to release into candidate/stable channels
-  confinement: devmode # use 'strict' once you have the right plugs and slots
+  confinement: classic # use 'strict' once you have the right plugs and slots
 
   parts:
     my-part:
