@@ -1,6 +1,6 @@
 {
   "name": "TriCo",
-  "version": "2.6.1",
+  "version": "2.6.2",
   "description": "Convert any Excel file to your MYSQL/MongoDB Data",
   "main": "main.js",
   "scripts": {
