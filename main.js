@@ -19,6 +19,7 @@ else{
 	image = path.join(__dirname, 'images', 'logo.ico');
 }
 let win;
+//Create the main window
 function createWindow(){
 	win = new BrowserWindow({width: 1000, height: 600, icon: image, webPreferences: {
 		nodeIntegration: true
@@ -30,17 +31,21 @@ function createWindow(){
 		win = null;
 	});
 	win.webContents.on('did-finish-load', function(){
+		//Load the previous MySQL credentials
 		db.find({}, function (err, docs) {
 			if(!err){
 				if(docs.length){
 					win.webContents.send('startupMySQL', docs);
+					//Load the previous MongoDB credentials
 					db2.find({}, function(err, docs){
 						if(!err){
 							if(docs.length){
 								win.webContents.send('startupMongoDB', docs);
+								//Load the full history
 								historydb.find({}, function(err, docs){
 									if(!err){
 										if(docs.length){
+											//Sort the history according to the time
 											docs.sort(function (a, b) {
 												return a.time - b.time;
 											});
@@ -57,6 +62,8 @@ function createWindow(){
 	});
 	checkUpdates();
 }
+//Function to check for updates of app
+//Refer here https://gist.github.com/ngudbhav/7e9d429229fc78644c44d58f78dc5bda
 function checkUpdates(e){
 	request('https://api.github.com/repos/ngudbhav/TriCo-electron-app/releases/latest', {headers: {'User-Agent':'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:59.0) Gecko/20100101 '}}, function(error, html, body){
 		if(!error){
@@ -117,6 +124,7 @@ function checkUpdates(e){
 ipcMain.on('update', function(e, item){
 	checkUpdates('f');
 });
+//Function to perform onclick of clear history button
 ipcMain.on('clearHistory', function(e, item){
 	dialog.showMessageBox(
 		{
@@ -131,10 +139,12 @@ ipcMain.on('clearHistory', function(e, item){
 		}
 	);
 });
+//Initiate the MongoDB Conversion
 ipcMain.on('readXlsForMongo', function(e, item){
 	var count = 0;
 	var pathArray = item.path;
 	var options = {};
+	//Create the options parameter for 'excel-to-mongodb' module
 	if(item.safeMode){
 		options.safeMode = true;
 	}
@@ -145,16 +155,20 @@ ipcMain.on('readXlsForMongo', function(e, item){
 		options.startCol = item.colS;
 		options.endCol = item.colE;
 	}
+	//Remove the previously stored credentials
 	db2.remove({}, { multi: true });
+	//Insert the new credentials
 	db2.insert({table:item.table,db:item.db}, function(error, results){
 		if(error){}
 		else{
 		}
 	});
+	//Add this transaction as a history
 	historydb.insert({table:item.table,db:item.db, files: pathArray, time: new Date(), destination:'MONGO'}, function(error, results){
 		if(error){}
 	});
 	let i = 0;
+	//Batch processing for all the input files
 	while(i<pathArray.length){
 		excelToMongoDB.covertToMongo({host: "localhost",path: pathArray[i],collection: item.table,db: item.db}, options, function(error, results){
 			if(error){
@@ -164,6 +178,7 @@ ipcMain.on('readXlsForMongo', function(e, item){
 				}
 			}
 			else{
+				//set the progress bar in taskbar
 				win.webContents.send('progress', i/pathArray.length);
 				win.setProgressBar(i/pathArray.length);
 				if(i===pathArray.length && count===0){
@@ -192,10 +207,12 @@ ipcMain.on('readXlsForMongo', function(e, item){
 		i++;
 	}
 });
+//Initiate the MySQL Conversion
 ipcMain.on('readXls', function(e, item){
 	var count = 0;
 	var pathArray = item.path;
 	var options = {};
+	//Create the options parameter for 'excel-to-mysql' module
 	if(item.autoid){
 		options.autoId = true;
 	}
@@ -209,20 +226,20 @@ ipcMain.on('readXls', function(e, item){
 		options.startCol = item.colS;
 		options.endCol = item.colE;
 	}
-	db.find({}, function (err, docs) {
-		if(err){}
-		
-	});
+	//Overwrite the previously stored credentials
 	db.remove({}, { multi: true });
 	db.insert({user: item.user,table:item.table,db:item.db}, function(error, results){
 		if(error){}
 	});
 	let i = 0;
+	//Add this transaction into history
 	historydb.insert({table:item.table,db:item.db, files: pathArray, time: new Date(), destination:'SQL'}, function(error, results){
 		if(error){}
 	});
+	//Iterate over all the input files
 	while(i<pathArray.length){
 		if(item.fileConvertCheck){
+			//Check if the task is to convert to file
 			excelToMYSQL.convertToFile({path: pathArray[i], table:item.table, db:item.db}, options, function(error, results){
 				if(error){
 					dialog.showErrorBox('Some Error occured!', error);
@@ -230,6 +247,7 @@ ipcMain.on('readXls', function(e, item){
 				}
 				else{
 					if(win){
+						//set the progress bar
 						win.webContents.send('progress', i/pathArray.length);
 						win.setProgressBar(i/pathArray.length);
 						if(i===pathArray.length && count === 0){
@@ -259,6 +277,7 @@ ipcMain.on('readXls', function(e, item){
 			i++;
 		}
 		else{
+			//If the task is to convert to db
 			excelToMYSQL.covertToMYSQL({host: "localhost",user: item.user,pass: item.pass,path: pathArray[i],table: item.table,db: item.db}, options, function(error, results){
 				if(error){
 					dialog.showErrorBox('Some Error occured!', error);
@@ -266,6 +285,7 @@ ipcMain.on('readXls', function(e, item){
 				}
 				else{
 					if(win){
+						//set the progress bar
 						win.webContents.send('progress', i/pathArray.length);
 						win.setProgressBar(i/pathArray.length);
 						if(i===pathArray.length && count === 0){
@@ -296,6 +316,7 @@ ipcMain.on('readXls', function(e, item){
 		}
 	}
 });
+//open buymeacoffee page in the default browser of the system
 ipcMain.on('coffee', function(e, item){
 	shell.openExternal('https://www.buymeacoffee.com/ngudbhav');
 });
