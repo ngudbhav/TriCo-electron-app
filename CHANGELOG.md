@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Upcoming
 
-- Ability to create database from app itself
+- <del>Ability to create database from app itself</del>. Done
 - Ability to execute SQL/Mongo queries after process
 - Compare and add the differences into the database
 - <del>My Earning Source (Donation System :p) (App will remain free forever)</del>. Done
