@@ -191,14 +191,14 @@
 		</div>
 		<div class="row" style="position: fixed;left: 0;bottom: 0;background-color: #E8EBEF;width:100%;z-index:3;cursor: default;">
 			<div class="col-2">
-				<h6>
+				<h6 data-toggle="tooltip" data-placement="top" title="Buy me a coffee!" style="cursor:pointer;" onclick="coffee();">
 					<center>NGUdbhav</center>
 				</h6>
 			</div>
 			<div class="col-4 offset-2" onclick="checkUpdates();">
 				<h6 data-toggle="tooltip" data-placement="top" title="Check for updates">
 					<center>
-						<a style="cursor:pointer;" id="updates">Connecting...</a>
+						<a style="cursor:pointer;" id="updates">Check for updates</a>
 					</center>
 				</h6>
 			</div>
@@ -217,6 +217,9 @@
 	$("#mongo").hide();
 	$("#history").hide();
 	$("button:eq(0)").css('backgroundColor', 'rgb(21, 98, 181)');
+	function coffee(){
+		ipcRenderer.send('coffee', 'null');
+	}
 	function checkUpdates(){
 		$("#updates").html('Connecting...');
 		ipcRenderer.send('update', 'null');

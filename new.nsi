@@ -2,7 +2,7 @@
 
 ; HM NIS Edit Wizard helper defines
 !define PRODUCT_NAME "TriCo"
-!define PRODUCT_VERSION "2.5.1"
+!define PRODUCT_VERSION "2.6.1"
 !define PRODUCT_PUBLISHER "NGUdbhav"
 !define PRODUCT_WEB_SITE "https://github.com/ngudbhav/TriCo-electron-app/releases"
 !define PRODUCT_DIR_REGKEY "Software\Microsoft\Windows\CurrentVersion\App Paths\TriCO.exe"

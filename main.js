@@ -25,6 +25,7 @@ function createWindow(){
 	}, frame: false });
 	win.loadFile('index.html');
 	win.setMenu(null);
+	//win.openDevTools();
 	win.on('closed', function(){
 		win = null;
 	});
@@ -43,7 +44,6 @@ function createWindow(){
 											docs.sort(function (a, b) {
 												return a.time - b.time;
 											});
-											console.log(docs);
 											win.webContents.send('startupHistory', docs);
 										}
 									}
@@ -295,6 +295,9 @@ ipcMain.on('readXls', function(e, item){
 			i++;
 		}
 	}
+});
+ipcMain.on('coffee', function(e, item){
+	shell.openExternal('https://www.buymeacoffee.com/ngudbhav');
 });
 app.on('ready', ()=>{
 	createWindow();
