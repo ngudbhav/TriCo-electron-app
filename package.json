@@ -44,6 +44,6 @@
     "electron-builder": "^20.39.0",
     "electron-installer-debian": "^1.2.0",
     "electron-installer-redhat": "^1.1.0",
-    "electron-packager": "^14.0.0"
+    "electron-packager": "^14.0.6"
   }
 }
