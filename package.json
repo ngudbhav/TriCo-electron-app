@@ -35,7 +35,7 @@
     "excel-to-mysql": "^2.5.7",
     "jquery": "^3.4.1",
     "nedb": "^1.8.0",
-    "node-notifier": "^5.4.0",
+    "node-notifier": "^5.4.3",
     "popper.js": "^1.15.0",
     "request": "^2.88.0"
   },
