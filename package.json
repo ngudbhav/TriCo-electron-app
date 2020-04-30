@@ -33,7 +33,7 @@
     "custom-electron-titlebar": "^3.0.8",
     "excel-to-mongodb": "^1.5.8",
     "excel-to-mysql": "^2.5.7",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "nedb": "^1.8.0",
     "node-notifier": "^5.4.0",
     "popper.js": "^1.15.0",
