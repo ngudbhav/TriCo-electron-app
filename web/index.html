@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>TriCO </title>
+    <link rel="stylesheet" href="index.css">
+  </head>
+  <body>
+    <div>
+      <div class="main">
+        <div class="header flex-row">
+          <a href="#" class="btn btn-primary" data-target="mysql">MySQL</a>
+          <a href="#" class="btn btn-primary" data-target="mongo">MongoDB</a>
+          <a href="#" class="btn btn-primary" data-target="history">History</a>
+        </div>
+        <br/>
+        <div class="container container--active" id="mysql">
+          <div class="mysql-container">
+            <form class="mysql-container__form form" enctype="multipart/form-data" id="mysql-form">
+              <div class="mysql-container__form-controls">
+                <div class="mysql-container__form-controls-row flex-row">
+                  <div class="option-form-group">
+                    <input type="checkbox" id="mysql-safe" name="safe">
+                    <label for="mysql-safe">Safe Mode (Affects Speed)</label>
+                  </div>
+                  <div class="option-form-group">
+                    <input type="checkbox" id="mysql-custom" name="custom">
+                    <label for="mysql-custom">Custom Start-End</label>
+                  </div>
+                </div>
+                <div class="mysql-container__form-controls-row flex-row">
+                  <div class="option-form-group">
+                    <input type="checkbox" id="mysql-auto-id" name="auto-id">
+                    <label for="mysql-auto-id">Add ID Column</label>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <hr/>
+              <br />
+              <div class="mysql-container__form-custom-options">
+                <div class="form-group">
+                  <label for="mysql-row-start" class="form-label">Starting Row</label>
+                  <input type="text" id="mysql-row-start" placeholder="Starting row number" class="form-control">
+                </div>
+                <br/>
+                <div class="form-group">
+                  <label for="mysql-row-end" class="form-label">Ending Row</label>
+                  <input type="text" id="mysql-row-end" placeholder="Ending row number" class="form-control">
+                </div>
+                <br/>
+                <div class="form-group">
+                  <label for="mysql-column-start" class="form-label">Starting Column</label>
+                  <input type="text" id="mysql-column-start" placeholder="Starting column number" class="form-control">
+                </div>
+                <br/>
+                <div class="form-group">
+                  <label for="mysql-column-end" class="form-label">Ending Column</label>
+                  <input type="text" id="mysql-column-end" placeholder="Ending column number" class="form-control">
+                </div>
+                <br />
+                <hr/>
+                <br />
+              </div>
+              <div class="form-group">
+                <label for="mysql-host" class="form-label">Host</label>
+                <input type="text" id="mysql-host" placeholder="Host (localhost, by default)" class="form-control">
+              </div>
+              <br/>
+              <div class="form-group">
+                <label for="mysql-db" class="form-label">Database</label>
+                <input type="text" id="mysql-db" placeholder="Name of Database" class="form-control">
+              </div>
+              <br/>
+              <div class="form-group">
+                <label for="mysql-user" class="form-label">Username</label>
+                <input type="text" id="mysql-user" placeholder="MySQL login Username" class="form-control">
+              </div>
+              <br/>
+              <div class="form-group">
+                <label for="mysql-password" class="form-label">Password</label>
+                <input type="password" id="mysql-password" placeholder="MySQL login Password" class="form-control">
+              </div>
+              <br/>
+              <div class="form-group">
+                <label for="mysql-table" class="form-label">Table</label>
+                <input type="text" id="mysql-table" placeholder="Destination Table name" class="form-control">
+              </div>
+              <br/>
+              <div class="file-form-group">
+                <label for="mysql-file" class="file-input-label">+</label>
+                <input type="file" id="mysql-file" multiple class="file-input">
+                <label for="mysql-file" class="file-preview-label">Choose Files</label>
+              </div>
+              <br/>
+              <div class="flex-row mysql-container__form-submit">
+                <a href="#" class="btn btn-primary btn-submit" id="mysql-form-submit">Save to Database</a>
+                <a href="#" class="btn btn-primary btn-submit" id="mysql-form-file-submit">Save to File</a>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="container" id="mongo">
+          <div class="mongo-container">
+            <form class="mongo-container__form form" enctype="multipart/form-data" id="mongo-form">
+              <div class="mongo-container__form-controls">
+                <div class="mongo-container__form-controls-row flex-row">
+                  <div class="option-form-group">
+                    <input type="checkbox" id="mongo-safe" name="mongo-safe">
+                    <label for="mongo-safe">Safe Mode (Affects Speed)</label>
+                  </div>
+                  <div class="option-form-group"> <!--onclick="checkCustom('mongo');"-->
+                    <input type="checkbox" id="mongo-custom" name="mongo-custom">
+                    <label for="mongo-custom">Custom Start-End</label>
+                  </div>
+                </div>
+              </div>
+              <br />
+              <hr/>
+              <br />
+              <div class="mongo-container__form-custom-options">
+                <div class="form-group">
+                  <label for="mongo-row-start" class="form-label">Starting Row</label>
+                  <input type="text" id="mongo-row-start" placeholder="Starting row number" class="form-control">
+                </div>
+                <br />
+                <div class="form-group">
+                  <label for="mongo-row-end" class="form-label">Ending Row</label>
+                  <input type="text" id="mongo-row-end" placeholder="Ending row number" class="form-control">
+                </div>
+                <br />
+                <div class="form-group">
+                  <label for="mongo-column-start" class="form-label">Starting Column</label>
+                  <input type="text" id="mongo-column-start" placeholder="Starting column number" class="form-control">
+                </div>
+                <br />
+                <div class="form-group">
+                  <label for="mongo-column-end" class="form-label">Ending Column</label>
+                  <input type="text" id="mongo-column-end" placeholder="Ending column number" class="form-control">
+                </div>
+                <br />
+                <hr/>
+                <br />
+              </div>
+              <div class="form-group">
+                <label for="mongo-host" class="form-label">Host</label>
+                <input type="text" id="mongo-host" placeholder="Host (localhost, by default)" class="form-control">
+              </div>
+              <br/>
+              <div class="form-group">
+                <label for="mongo-db" class="form-label">Database</label>
+                <input type="text" id="mongo-db" placeholder="Name of Database" class="form-control">
+              </div>
+              <br/>
+              <div class="form-group">
+                <label for="mongo-user" class="form-label">Username</label>
+                <input type="text" id="mongo-user" placeholder="Mongo login Username" class="form-control">
+              </div>
+              <br/>
+              <div class="form-group">
+                <label for="mongo-password" class="form-label">Password</label>
+                <input type="password" id="mongo-password" placeholder="Mongo login Password" class="form-control">
+              </div>
+              <br/>
+              <div class="form-group">
+                <label for="mongo-table" class="form-label">Collection</label>
+                <input type="text" id="mongo-table" placeholder="Destination Collection name" class="form-control">
+              </div>
+              <br/>
+              <div class="file-form-group">
+                <label for="mongo-file" class="file-input-label">+</label>
+                <input type="file" id="mongo-file" multiple class="file-input">
+                <label for="mongo-file" class="file-preview-label">Choose Files</label>
+              </div>
+              <br/>
+              <div class="flex-row mysql-container__form-submit">
+                <a href="#" class="btn btn-primary" id="mongo-form-submit">Save to Database</a>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="container" id="history">
+          <h3 class="center">Last 100 records are fetched for performance reasons</h3>
+          <br>
+          <form class="form">
+            <div class="list-group" id="history-list">
+              <div class="list-group__item">
+                <h4 class="center">Date: Sun Jul 25 2021 16:17:50</h4>
+                <br />
+                <h5>
+                  DB: ug<br />
+                  Table: sample<br />
+                  Destination: SQL<br />
+                  Files: C:\\Users\\NGUdbhav\\Desktop\\NGUdbhav\\excel-to-mysql\\test\\sample1.xlsx
+                </h5>
+              </div>
+              <br /><hr /><br />
+              <div class="list-group__item">
+                <h4 class="center">Date: Sun Jul 25 2021 16:17:50</h4>
+                <br />
+                <h5>
+                  DB: ug<br />
+                  Table: sample<br />
+                  Destination: SQL<br />
+                  Files: C:\\Users\\NGUdbhav\\Desktop\\NGUdbhav\\excel-to-mysql\\test\\sample1.xlsx
+                </h5>
+              </div>
+              <br /><hr /><br />
+              <div class="list-group__item">
+                <h4 class="center">Date: Sun Jul 25 2021 16:17:50</h4>
+                <br />
+                <h5>
+                  DB: ug<br />
+                  Table: sample<br />
+                  Destination: SQL<br />
+                  Files: C:\\Users\\NGUdbhav\\Desktop\\NGUdbhav\\excel-to-mysql\\test\\sample1.xlsx
+                </h5>
+              </div>
+              <br /><hr /><br />
+              <div class="list-group__item">
+                <h4 class="center">Date: Sun Jul 25 2021 16:17:50</h4>
+                <br />
+                <h5>
+                  DB: ug<br />
+                  Table: sample<br />
+                  Destination: SQL<br />
+                  Files: C:\\Users\\NGUdbhav\\Desktop\\NGUdbhav\\excel-to-mysql\\test\\sample1.xlsx
+                </h5>
+              </div>
+            </div>
+            <br>
+            <a href="#" class="btn btn-primary">Clear History</a> <!--onclick="ipcRenderer.send('clearHistory', null)"-->
+          </form>
+        </div>
+        <br />
+        <div class="progress-container center hide">
+          <label for="progress-bar">Progress:</label>
+          <progress id="progress-bar" value="0" max="100"> 0% </progress>
+        </div>
+      </div>
+      <div class="footer flex-row">
+        <h6 title="Buy me a coffee!" class="footer__text" id="name"> <!-- onclick="coffee();"  -->
+          NGUdbhav
+        </h6>
+        <h6 title="Check for updates" class="footer__text" id="update">
+          Check for updates
+        </h6>
+        <h6 title="Current Status" class="footer__text" id="status">
+          Idle
+        </h6>
+      </div>
+    </div>
+    <script src="index.js"></script>
+  </body>
+</html>
