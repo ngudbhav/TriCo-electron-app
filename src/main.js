@@ -19,10 +19,14 @@ const createWindow = () => {
 	mainWindow = new BrowserWindow({
 		width: 1200, height: 800, frame: false,
 		webPreferences: {
+			devTools: isDevelopment(),
 			nodeIntegration: false,
+			nodeIntegrationInWorker: false,
+			nodeIntegrationInSubFrames: false,
 			contextIsolation: true,
 			enableRemoteModule: true,
 			preload: path.join(__dirname, '../web', 'preload.js'),
+			disableBlinkFeatures: "Auxclick",
 		}
 	});
 	mainWindow.loadFile(path.join(__dirname, '../web', 'index.html')).then();
@@ -47,14 +51,7 @@ const createWindow = () => {
 			}
 		});
 		//Load the full history
-		historyDb.find({}).sort({ time: -1, updatedAt: -1 }).limit(100).exec((error, docs) => {
-			if(!error){
-				if(docs.length){
-					console.log(docs);
-					mainWindow.webContents.send('startup-history', docs);
-				}
-			}
-		});
+		historyDb.loadHistory(mainWindow);
 	});
 	checkUpdates('auto', mainWindow);
 }
@@ -70,13 +67,15 @@ ipcMain.on('error', (_e, item) => {
 //Function to perform onclick of clear history button
 ipcMain.on('clearHistory', () => {
 	showMessageDialogBox({
+		sync: true,
 		type: 'question',
 		buttons:['Yes', 'No'],
 		title: 'Clear everything?',
 		detail: 'This will clear the records. The data backups won\'t be removed. You can remove the backups manually in the installation directory.',
-	}, (response) => {
+	}, response => {
 		if(response === 0){
 			historyDb.remove({}, {multi:true});
+			historyDb.loadHistory(mainWindow);
 		}
 	});
 });
@@ -120,6 +119,7 @@ ipcMain.on('readXlsForMongo', (e, item) => {
 
 		return success;
 	});
+	historyDb.loadHistory(mainWindow);
 });
 //Initiate the MySQL Conversion
 ipcMain.on('readXls', (e, item) => {
@@ -171,6 +171,7 @@ ipcMain.on('readXls', (e, item) => {
 		}
 		return success;
 	});
+	historyDb.loadHistory(mainWindow);
 });
 
 app.whenReady().then(() => {

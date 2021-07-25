@@ -64,7 +64,6 @@ window.api.receive('startup-mongo', data => {
 
 window.api.receive('startup-history', data => {
   if (data) {
-    console.log(data);
     populateHistory(data);
   }
 });
@@ -99,6 +98,10 @@ $('#mongo-form-submit')[0].addEventListener('click', () => {
   } else {
     window.api.showError(validated[1]);
   }
+});
+
+$('#history-form-submit')[0].addEventListener('click', () => {
+  window.api.send('clearHistory', null)
 });
 
 /* Utils */
@@ -200,27 +203,3 @@ const populateHistory = data => {
 const isNumber = test => {
   return typeof test === 'number';
 };
-
-// ipcRenderer.on('startupMySQL', function(e, item){
-//   $("#ydb").val(item[0].db);
-//   $("#yuser").val(item[0].user);
-//   $("#ytable").val(item[0].table);
-// });
-// ipcRenderer.on('startupMongoDB', function(e, item){
-//   $("#mdb").val(item[0].db);
-//   $("#mtable").val(item[0].table);
-// });
-// ipcRenderer.on('startupHistory', function(e, item){
-//   var history = '';
-//   for(let i in item){
-//     if(item[i].destination == 'SQL'){
-//       history+='<a class="list-group-item list-group-item-action list-group-item-primary d-flex justify-content-between align-items-center" title = "'+new Date(item[i].time)+'" ondblclick="restore(this);" data-id="'+item[i]._id+'">Table '+item[i].table+'<br>'+JSON.stringify(item[i].files)+'<span class="badge badge-primary badge-pill">'+item[i].destination+'</span></a><br>';
-//     }
-//     else{
-//       history+='<a class="list-group-item list-group-item-action list-group-item-success d-flex justify-content-between align-items-center" title = "'+new Date(item[i].time)+'" ondblclick="restore(this);" data-id="'+item[i]._id+'">Collection '+item[i].table+'<br>'+JSON.stringify(item[i].files)+'<span class="badge badge-success badge-pill">'+item[i].destination+'</span></a><br>';
-//     }
-//   }
-//   $("#historydb").html(history);
-//   console.log(item);
-// });
-
