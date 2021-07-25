@@ -94,7 +94,7 @@ a {
 
 .footer__text {
   cursor: pointer;
-  font-weight: normal;
+  font-weight: bold;
 }
 
 .footer__text:first-of-type {
