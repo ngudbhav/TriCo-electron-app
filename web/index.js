@@ -65,6 +65,9 @@ window.api.receive('startup-mongo', data => {
 window.api.receive('startup-history', data => {
   if (data) {
     populateHistory(data);
+    if (data[0]) {
+      setWindow(data[0]);
+    }
   }
 });
 
@@ -198,6 +201,15 @@ const populateHistory = data => {
     `;
   });
   historyEl.innerHTML = fullHistory;
+};
+
+const setWindow = lastRecord => {
+  const mysql = lastRecord.destination === 'SQL';
+  if (mysql) {
+    $('.header a[data-target="mysql"]')[0].click();
+  } else {
+    $('.header a[data-target="mongo"]')[0].click();
+  }
 };
 
 const isNumber = test => {
