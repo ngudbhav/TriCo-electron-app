@@ -2,7 +2,7 @@
   "name": "TriCo",
   "version": "2.6.2",
   "description": "Convert any Excel file to your MYSQL/MongoDB Data",
-  "main": "main.js",
+  "main": "src/main.js",
   "scripts": {
     "start": "electron .",
     "pack": "electron-builder --dir",
@@ -13,37 +13,26 @@
     "install-redhat": "electron-installer-redhat --src release-builds/TriCo-linux-x64/ --dest dist/installers/ --arch x86_64",
     "install-debian": "electron-installer-debian --src release-builds/TriCo-linux-x64/ --dest dist/installers/ --arch amd64"
   },
-  "build": {
-    "appId": "NGUdbhav.TriCo",
-    "icon": "images/logo.jpg",
-    "nsis": {
-      "oneClick": false,
-      "perMachine": true,
-      "allowElevation": true,
-      "allowToChangeInstallationDirectory": true,
-      "menuCategory": "TriCo",
-      "include": "try.nsh",
-      "license": "license.txt"
-    }
-  },
-  "author": "NGUdbhav",
+  "author": "Udbhav Gambhir <ngudbhav05@hotmail.com> (https://www.ngudbhav.com)",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ngudbhav/TriCo-electron-app.git"
+  },
   "dependencies": {
-    "bootstrap": "^4.3.1",
-    "custom-electron-titlebar": "^3.0.8",
-    "excel-to-mongodb": "^1.5.8",
-    "excel-to-mysql": "^2.5.7",
-    "jquery": "^3.4.1",
+    "custom-electron-titlebar": "^3.2.7",
+    "excel-to-mongodb": "^1.6.1",
+    "excel-to-mysql": "^2.6.2",
+    "mongoose": "^5.12.14",
+    "mysql": "^2.18.1",
     "nedb": "^1.8.0",
-    "node-notifier": "^5.4.0",
-    "popper.js": "^1.15.0",
-    "request": "^2.88.0"
+    "node-fetch": "^2.6.1"
   },
   "devDependencies": {
-    "electron": "^5.0.1",
-    "electron-builder": "^20.39.0",
+    "electron": "^13.1.6"
+  },
+  "optionalDependencies": {
     "electron-installer-debian": "^1.2.0",
-    "electron-installer-redhat": "^1.1.0",
-    "electron-packager": "^14.0.0"
+    "electron-installer-redhat": "^1.1.0"
   }
 }
