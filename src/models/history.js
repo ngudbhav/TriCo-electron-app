@@ -8,4 +8,12 @@ const historyDb = new Datastore({
   autoload: true,
 });
 
+historyDb.loadHistory = window => {
+  historyDb.find({}).sort({ time: -1, updatedAt: -1 }).limit(100).exec((error, docs) => {
+    if(!error){
+      window.webContents.send('startup-history', docs);
+    }
+  });
+};
+
 module.exports = historyDb;

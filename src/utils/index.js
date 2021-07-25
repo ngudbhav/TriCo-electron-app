@@ -89,7 +89,7 @@ const checkUpdates = (source, window) => {
 
 const showMessageDialogBox = (options, callback = () => {}) => {
   return options.sync ?
-    dialog.showMessageBoxSync(options) :
+    callback(dialog.showMessageBoxSync(options)) :
     dialog.showMessageBox(options).then(callback);
 };
 
