@@ -75,6 +75,15 @@ $('#name')[0].addEventListener('click', () => {
   window.api.buyMeACoffee();
 });
 
+$('input[type="file"]').forEach(el => {
+  el.addEventListener('change', () => {
+    const elId = el.getAttribute('id');
+    $(`label[for='${elId}'].file-preview-label`)[0].innerHTML = `
+      ${el.files.length} file(s) selected
+    `;
+  });
+});
+
 $('#mysql-form-submit')[0].addEventListener('click', () => {
   const validated = validateForm('mysql');
   if (validated[0]) {

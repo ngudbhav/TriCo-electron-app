@@ -1,6 +1,4 @@
-const {
-  ipcRenderer, contextBridge, shell, dialog,
-} = require('electron');
+const { ipcRenderer, contextBridge, shell } = require('electron');
 const customTitleBar = require('custom-electron-titlebar');
 
 contextBridge.exposeInMainWorld(
