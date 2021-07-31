@@ -1,4 +1,6 @@
-const { app, BrowserWindow, ipcMain, dialog } = require('electron');
+const {
+	app, BrowserWindow, ipcMain, dialog, nativeTheme,
+} = require('electron');
 const path = require('path');
 const excelToMongoDB = require('excel-to-mongodb');
 const excelToMYSQL = require('excel-to-mysql');
@@ -9,17 +11,17 @@ const mongoDb = require('./models/mongo');
 
 const {
 	handleProgress, constructCommonOptions, handleCredAndHistory, checkUpdates,
-	showMessageDialogBox, isDevelopment,
+	showMessageDialogBox,
 } = require('./utils');
 
-app.disableHardwareAcceleration();
+// app.disableHardwareAcceleration();
 let mainWindow;
 //Create the main window
 const createWindow = () => {
 	mainWindow = new BrowserWindow({
+		backgroundColor: nativeTheme.shouldUseDarkColors ? '#333333' : '#ffffff',
 		width: 1200, height: 800, frame: false,
 		webPreferences: {
-			devTools: isDevelopment(),
 			nodeIntegration: false,
 			nodeIntegrationInWorker: false,
 			nodeIntegrationInSubFrames: false,
@@ -31,7 +33,7 @@ const createWindow = () => {
 	});
 	mainWindow.loadFile(path.join(__dirname, '../web', 'index.html')).then();
 	mainWindow.removeMenu();
-	isDevelopment() ? mainWindow.webContents.openDevTools() : '';
+	mainWindow.webContents.openDevTools()
 
 	// Send history and other data after window is loaded. Also check for updates.
 	mainWindow.on('ready-to-show', () => {
@@ -88,12 +90,22 @@ ipcMain.on('readXlsForMongo', (e, item) => {
 
 	handleCredAndHistory(mongoDb, 'MONGO', item);
 
+	if (item.safeMode) {
+		options.destination = dialog.showOpenDialogSync(mainWindow, {
+			properties: ['openDirectory']
+		});
+		if (!options.destination) return;
+		options.destination = options.destination[0];
+	}
+
 	//Batch processing for all the input files
-	pathArray.every((path, i) => {
+	pathArray.every((filePath, i) => {
 		let success = true;
+		if (options.destination)
+			options.destination = path.join(options.destination, `trico-${i}.sql`)
 		excelToMongoDB.covertToMongo({
 			host: "localhost",
-			path: path,
+			path: filePath,
 			collection: item.table,
 			db: item.db,
 			user: item.username,
@@ -105,10 +117,10 @@ ipcMain.on('readXlsForMongo', (e, item) => {
 				if(error.errorLabels){
 					dialog.showErrorBox(
 						'Some Error occurred!',
-						`There may be a connection error! for file: ${path}`
+						`There may be a connection error! for file: ${filePath}`
 					);
 				} else {
-					dialog.showErrorBox('Some Error occurred!', `${error} for file: ${path}`);
+					dialog.showErrorBox('Some Error occurred!', `${error} for file: ${filePath}`);
 				}
 			}
 			else{
@@ -130,19 +142,27 @@ ipcMain.on('readXls', (e, item) => {
 	const options = constructCommonOptions(item);
 	handleCredAndHistory(mysqlDb, 'SQL', item);
 
+	if (item.fileConvert || item.safeMode) {
+		options.destination = dialog.showOpenDialogSync(mainWindow, {
+			properties: ['openDirectory']
+		});
+		if (!options.destination) return;
+		options.destination = options.destination[0];
+	}
+
 	//Iterate over all the input files
-	pathArray.every((path, i) => {
+	pathArray.every((filePath, i) => {
 		let success = true;
+		if (options.destination)
+			options.destination = path.join(options.destination, `trico-${i}.sql`)
 		if(item.fileConvert) {
-			options.destination = dialog.showSaveDialogSync(mainWindow);
-			if (!options.destination) return false;
 			excelToMYSQL.convertToFile({
-				path: path,
+				path: filePath,
 				table:item.table,
 				db:item.db,
 			}, options, error => {
 				if(error) {
-					dialog.showErrorBox('Some Error occurred!', `${error} for file: ${path}`);
+					dialog.showErrorBox('Some Error occurred!', `${error} for file: ${filePath}`);
 					success = false;
 				} else {
 					count = handleProgress(mainWindow, i + 1, pathArray.length, count);
@@ -155,13 +175,13 @@ ipcMain.on('readXls', (e, item) => {
 				host: item.host || "localhost",
 				user: item.username,
 				pass: item.password,
-				path: path,
+				path: filePath,
 				table: item.table,
 				db: item.db,
 				endConnection: true,
 			}, options, error => {
 				if(error) {
-					dialog.showErrorBox('Some Error occurred!', `${error} for file: ${path}`);
+					dialog.showErrorBox('Some Error occurred!', `${error} for file: ${filePath}`);
 					success = false;
 				} else {
 					count = handleProgress(mainWindow, i + 1, pathArray.length, count);

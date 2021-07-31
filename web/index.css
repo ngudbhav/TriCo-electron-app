@@ -221,3 +221,43 @@ progress {
     opacity: 1;
   }
 }
+
+@media (prefers-color-scheme: dark) {
+  * {
+    --primary-color: #0069d9;
+  }
+
+  body {
+    background-color: #333333;
+    color: white;
+  }
+
+  .form {
+    background-color: #4e4e4e;
+  }
+
+  .footer {
+    background-color: #4e4e4e;
+  }
+
+  .form-control {
+    background-color: #4e4e4e;
+    color: white;
+  }
+}
+
+@media (prefers-color-scheme: light) {
+  * {
+    --primary-color: #007bd9;
+  }
+
+  body {
+    background-color: white;
+    color: black;
+  }
+
+  .form-control {
+    background-color: white;
+    color: black;
+  }
+}
