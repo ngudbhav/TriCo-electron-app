@@ -23,16 +23,17 @@
     "custom-electron-titlebar": "^3.2.7",
     "excel-to-mongodb": "^1.6.1",
     "excel-to-mysql": "^2.6.2",
-    "mongoose": "^5.12.14",
+    "mongoose": "^5.13.5",
     "mysql": "^2.18.1",
     "nedb": "^1.8.0",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
-    "electron": "^13.1.6"
+    "electron": "^13.1.7",
+    "electron-packager": "^15.3.0"
   },
   "optionalDependencies": {
-    "electron-installer-debian": "^1.2.0",
-    "electron-installer-redhat": "^1.1.0"
+    "electron-installer-debian": "^3.1.0",
+    "electron-installer-redhat": "^3.3.0"
   }
 }
