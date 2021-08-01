@@ -75,6 +75,26 @@ $('#name')[0].addEventListener('click', () => {
   window.api.buyMeACoffee();
 });
 
+$('#history-list')[0].addEventListener('click', e => {
+  const el = e.target;
+  let targetElement;
+  if (el.classList.contains('list-group__item')) {
+    targetElement = el.querySelector('.list-group__item-content');
+  } else if (el.nodeName === 'H4') {
+    targetElement = el.parentElement.nextElementSibling;
+  } else if (el.classList.contains('list-group__item-header')) {
+    targetElement = el.nextElementSibling;
+  }
+
+  if (targetElement) {
+    if (targetElement.classList.contains('hide')) {
+      targetElement.classList.remove('hide');
+    } else {
+      targetElement.classList.add('hide');
+    }
+  }
+});
+
 $('input[type="file"]').forEach(el => {
   el.addEventListener('change', () => {
     const elId = el.getAttribute('id');
@@ -197,16 +217,19 @@ const populateHistory = data => {
   data.forEach(history => {
     fullHistory += `
       <div class="list-group__item">
-        <h4 class="center">${history.time}</h4>
-        <br />
-        <h5>
-          DB: ${history.db}<br />
-          Table: ${history.table}<br />
-          Destination: ${history.destination}<br />
-          Files: ${history.files}
-        </h5>
+        <div class="list-group__item-header">
+          <h4>${new Date(history.time).toDateString()}</h4>
+          <h4>Type: ${history.destination}</h4>
+        </div>
+        <div class="list-group__item-content hide">
+          <h5>
+            DB: ${history.db}<br />
+            Table: ${history.table}<br />
+            Files: ${history.files}
+          </h5>
+        </div>
       </div>
-      <br /><hr /><br />
+      <br /><br />
     `;
   });
   historyEl.innerHTML = fullHistory;

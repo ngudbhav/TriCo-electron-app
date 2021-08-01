@@ -83,7 +83,7 @@ ipcMain.on('clearHistory', () => {
 });
 
 //Initiate the MongoDB Conversion
-ipcMain.on('readXlsForMongo', (e, item) => {
+ipcMain.on('readXlsForMongo', async (e, item) => {
   let count = 0;
   const pathArray = item.files;
   const options = constructCommonOptions(item);
@@ -99,42 +99,52 @@ ipcMain.on('readXlsForMongo', (e, item) => {
   }
 
   //Batch processing for all the input files
-  pathArray.every((filePath, i) => {
+  for await (const [i, filePath] of pathArray.entries()) {
     let success = true;
     if (options.destination)
       options.destination = path.join(options.destination, `trico-${i}.sql`)
-    excelToMongoDB.covertToMongo({
-      host: "localhost",
-      path: filePath,
-      collection: item.table,
-      db: item.db,
-      user: item.username,
-      pass: item.password,
-      endConnection: true,
-    }, options, error => {
-      if(error){
-        success = false;
-        if(error.errorLabels){
-          dialog.showErrorBox(
-            'Some Error occurred!',
-            `There may be a connection error! for file: ${filePath}`
-          );
-        } else {
-          dialog.showErrorBox('Some Error occurred!', `${error} for file: ${filePath}`);
+    try {
+      await excelToMongoDB.covertToMongo({
+        host: item.host || "localhost",
+        path: filePath,
+        collection: item.table,
+        db: item.db,
+        user: item.username,
+        pass: item.password,
+        endConnection: true,
+      }, options, error => {
+        if(error){
+          success = false;
+          if(error.errorLabels){
+            dialog.showErrorBox(
+              'Some Error occurred!',
+              `There may be a connection error! for file: ${filePath}`
+            );
+          } else {
+            dialog.showErrorBox('Some Error occurred!', `${error} for file: ${filePath}`);
+          }
         }
-      }
-      else{
-        count = handleProgress(mainWindow, i + 1, pathArray.length, count);
-        success = true;
-      }
-    });
+        else{
+          count = handleProgress(mainWindow, i + 1, pathArray.length, count);
+          success = true;
+        }
+      });
+    } catch (e) {
+      success = false;
+    }
 
-    return success;
-  });
+    if (!success) {
+      count = handleProgress(
+        mainWindow, i + 1, pathArray.length, count, { mode: 'error' }
+      );
+      break;
+    }
+  }
+
   historyDb.loadHistory(mainWindow);
 });
 //Initiate the MySQL Conversion
-ipcMain.on('readXls', (e, item) => {
+ipcMain.on('readXls', async (e, item) => {
   let count = 0;
   const pathArray = item.files;
 
@@ -151,46 +161,61 @@ ipcMain.on('readXls', (e, item) => {
   }
 
   //Iterate over all the input files
-  pathArray.every((filePath, i) => {
+  for await (const [i, filePath] of pathArray.entries()) {
     let success = true;
     if (options.destination)
       options.destination = path.join(options.destination, `trico-${i}.sql`)
     if(item.fileConvert) {
-      excelToMYSQL.convertToFile({
-        path: filePath,
-        table:item.table,
-        db:item.db,
-      }, options, error => {
-        if(error) {
-          dialog.showErrorBox('Some Error occurred!', `${error} for file: ${filePath}`);
-          success = false;
-        } else {
-          count = handleProgress(mainWindow, i + 1, pathArray.length, count);
-          success = true;
-        }
-      });
+      try {
+        await excelToMYSQL.convertToFile({
+          path: filePath,
+          table:item.table,
+          db:item.db,
+        }, options, error => {
+          if(error) {
+            dialog.showErrorBox('Some Error occurred!', `${error} for file: ${filePath}`);
+            success = false;
+          } else {
+            count = handleProgress(mainWindow, i + 1, pathArray.length, count);
+            success = true;
+          }
+        });
+      } catch (e) {
+        success = false;
+      }
     } else {
       //If the task is to convert to db
-      excelToMYSQL.covertToMYSQL({
-        host: item.host || "localhost",
-        user: item.username,
-        pass: item.password,
-        path: filePath,
-        table: item.table,
-        db: item.db,
-        endConnection: true,
-      }, options, error => {
-        if(error) {
-          dialog.showErrorBox('Some Error occurred!', `${error} for file: ${filePath}`);
-          success = false;
-        } else {
-          count = handleProgress(mainWindow, i + 1, pathArray.length, count);
-          success = true;
-        }
-      });
+      try {
+        await excelToMYSQL.covertToMYSQL({
+          host: item.host || "localhost",
+          user: item.username,
+          pass: item.password,
+          path: filePath,
+          table: item.table,
+          db: item.db,
+          endConnection: true,
+        }, options, error => {
+          if(error) {
+            dialog.showErrorBox('Some Error occurred!', `${error} for file: ${filePath}`);
+            success = false;
+          } else {
+            count = handleProgress(mainWindow, i + 1, pathArray.length, count);
+            success = true;
+          }
+        });
+      } catch (e) {
+        success = false;
+      }
     }
-    return success;
-  });
+
+    if (!success) {
+      count = handleProgress(
+        mainWindow, i + 1, pathArray.length, count, { mode: 'error' }
+      );
+      break;
+    }
+  }
+
   historyDb.loadHistory(mainWindow);
 });
 

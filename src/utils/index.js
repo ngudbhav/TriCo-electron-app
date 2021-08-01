@@ -3,10 +3,14 @@ const request = require('node-fetch');
 
 const historyDb = require('../models/history');
 
-const handleProgress = (window, progress, total, sent) => {
-  window.webContents.send('progress', progress/total);
-  window.setProgressBar(progress/total);
-  if(progress === total && sent === 0){
+const handleProgress = (window, progress, total, sent, isError) => {
+  window.webContents.send(
+    'progress', !isError ? progress / total : 0
+  );
+  window.setProgressBar(
+    progress / total, { mode: !isError ? 'normal' : 'error' }
+  );
+  if(!isError && progress === total && sent === 0){
     sent = 1;
     showMessageDialogBox({
       sync: true,

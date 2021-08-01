@@ -80,6 +80,23 @@ a {
   display: block;
 }
 
+/* history container */
+.list-group__item {
+  border: 0.1rem solid black;
+  box-shadow: rgb(0 0 0/35%) 0 5px 15px;
+  padding: 1rem;
+  cursor: pointer;
+}
+
+.list-group__item-header {
+  display: flex;
+  justify-content: space-around;
+}
+
+.list-group__item-content {
+  padding: 0.5rem 0;
+}
+
 /* Footer */
 .footer {
   position: fixed;
