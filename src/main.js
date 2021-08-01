@@ -14,7 +14,6 @@ const {
   showMessageDialogBox,
 } = require('./utils');
 
-// app.disableHardwareAcceleration();
 let mainWindow;
 //Create the main window
 const createWindow = () => {

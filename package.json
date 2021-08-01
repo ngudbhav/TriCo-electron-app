@@ -7,7 +7,7 @@
     "test": "node test/spec.js",
     "pack": "npx electron-builder --dir",
     "dist": "npx electron-builder",
-    "start": "set NODE_ENV=development && electron .",
+    "start": "electron .",
     "package-mac": "npx electron-packager . --overwrite --platform=darwin --arch=x64 --icon=images/logo.icns --prune=true --out=release-builds",
     "package-win": "npx electron-packager . TriCo --overwrite --asar=true --platform=win32 --arch=x64 --icon=images/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=NGUdbhav --version-string.FileDescription=Application --version-string.ProductName=\"TriCo\"",
     "package-linux": "npx electron-packager . TriCo --overwrite --asar=true --platform=linux --arch=x64 --icon=images/logo.ico --prune=true --out=release-builds",
