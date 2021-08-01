@@ -22,6 +22,7 @@ const createWindow = () => {
     backgroundColor: nativeTheme.shouldUseDarkColors ? '#333333' : '#ffffff',
     width: 1200, height: 800, frame: false,
     webPreferences: {
+      devTools: false,
       nodeIntegration: false,
       nodeIntegrationInWorker: false,
       nodeIntegrationInSubFrames: false,
@@ -33,7 +34,7 @@ const createWindow = () => {
   });
   mainWindow.loadFile(path.join(__dirname, '../web', 'index.html')).then();
   mainWindow.removeMenu();
-  mainWindow.webContents.openDevTools()
+  // mainWindow.webContents.openDevTools()
 
   // Send history and other data after window is loaded. Also check for updates.
   mainWindow.on('ready-to-show', () => {
