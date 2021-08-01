@@ -74,7 +74,6 @@ const checkUpdates = (source, window) => {
             shell.openExternal('https://github.com/ngudbhav/TriCo-electron-app/releases/latest').then();
           }
         });
-        // Add notification to notify about the update
       }
       else{
         if(source === 'user'){
