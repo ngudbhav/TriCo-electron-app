@@ -4,12 +4,13 @@
   "description": "Convert any Excel file to your MYSQL/MongoDB Data",
   "main": "src/main.js",
   "scripts": {
+    "test": "node test/spec.js",
+    "pack": "npx electron-builder --dir",
+    "dist": "npx electron-builder",
     "start": "set NODE_ENV=development && electron .",
-    "pack": "electron-builder --dir",
-    "dist": "electron-builder",
-    "package-mac": "electron-packager . --overwrite --platform=darwin --arch=x64 --icon=images/logo.icns --prune=true --out=release-builds",
-    "package-win": "electron-packager . TriCo --overwrite --asar=true --platform=win32 --arch=x64 --icon=images/logo.ico --prune=true --out=release-builds --version-string.CompanyName=NGUdbhav --version-string.FileDescription=Application --version-string.ProductName=\"TriCo\"",
-    "package-linux": "electron-packager . TriCo --overwrite --asar=true --platform=linux --arch=x64 --icon=images/logo.ico --prune=true --out=release-builds",
+    "package-mac": "npx electron-packager . --overwrite --platform=darwin --arch=x64 --icon=images/logo.icns --prune=true --out=release-builds",
+    "package-win": "npx electron-packager . TriCo --overwrite --asar=true --platform=win32 --arch=x64 --icon=images/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=NGUdbhav --version-string.FileDescription=Application --version-string.ProductName=\"TriCo\"",
+    "package-linux": "npx electron-packager . TriCo --overwrite --asar=true --platform=linux --arch=x64 --icon=images/logo.ico --prune=true --out=release-builds",
     "install-redhat": "electron-installer-redhat --src release-builds/TriCo-linux-x64/ --dest dist/installers/ --arch x86_64",
     "install-debian": "electron-installer-debian --src release-builds/TriCo-linux-x64/ --dest dist/installers/ --arch amd64"
   },
@@ -18,6 +19,10 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/ngudbhav/TriCo-electron-app.git"
+  },
+  "build": {
+    "appId": "NGUdbhav.TriCo",
+    "compression": "maximum"
   },
   "dependencies": {
     "custom-electron-titlebar": "^3.2.7",
@@ -30,10 +35,7 @@
   },
   "devDependencies": {
     "electron": "^13.1.7",
-    "electron-packager": "^15.3.0"
-  },
-  "optionalDependencies": {
-    "electron-installer-debian": "^3.1.0",
-    "electron-installer-redhat": "^3.3.0"
+    "electron-builder": "^22.11.7",
+    "spectron": "^15.0.0"
   }
 }
