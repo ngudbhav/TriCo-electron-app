@@ -260,6 +260,7 @@ progress {
   .form-control {
     background-color: #4e4e4e;
     color: white;
+    border: 0.1rem solid black;
   }
 }
 
@@ -276,5 +277,6 @@ progress {
   .form-control {
     background-color: white;
     color: black;
+    border: 0.1rem solid black;
   }
 }

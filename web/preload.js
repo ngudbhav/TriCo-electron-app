@@ -19,11 +19,13 @@ contextBridge.exposeInMainWorld(
 );
 
 window.addEventListener('DOMContentLoaded', () => {
-  new customTitleBar.Titlebar({
-    backgroundColor: customTitleBar.Color.fromHex('#0069d9'),
-    icon: '../images/icons/png/1024x1024.png',
-    menu: null,
-    titleHorizontalAlignment:'left',
-    shadow:true
-  });
+  if (process.platform !== 'darwin') {
+    new customTitleBar.Titlebar({
+      backgroundColor: customTitleBar.Color.fromHex('#0069d9'),
+      icon: '../images/icons/png/1024x1024.png',
+      menu: null,
+      titleHorizontalAlignment:'left',
+      shadow:true
+    });
+  }
 });
