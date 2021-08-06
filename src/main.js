@@ -19,7 +19,8 @@ let mainWindow;
 const createWindow = () => {
   mainWindow = new BrowserWindow({
     backgroundColor: nativeTheme.shouldUseDarkColors ? '#333333' : '#ffffff',
-    width: 1200, height: 800, frame: false,
+    width: 1200, height: 800,
+    frame: process.platform === 'darwin',
     webPreferences: {
       devTools: false,
       nodeIntegration: false,
