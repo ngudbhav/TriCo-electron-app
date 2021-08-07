@@ -1,6 +1,6 @@
 {
   "name": "TriCo",
-  "version": "2.6.2",
+  "version": "3.0.0",
   "description": "Convert any Excel file to your MYSQL/MongoDB Data",
   "main": "src/main.js",
   "scripts": {
@@ -22,7 +22,16 @@
   },
   "build": {
     "appId": "NGUdbhav.TriCo",
-    "compression": "maximum"
+    "compression": "maximum",
+    "mac": {
+      "category": "public.app-category.developer-tools",
+      "gatekeeperAssess": false,
+      "icon": "images/icons/mac/icon.icns",
+      "darkModeSupport": true
+    },
+    "dmg": {
+      "sign": false
+    }
   },
   "dependencies": {
     "custom-electron-titlebar": "^3.2.7",
@@ -35,7 +44,7 @@
   },
   "devDependencies": {
     "electron": "^13.1.7",
-    "electron-builder": "^22.11.7",
+    "electron-builder": "^22.11.11",
     "spectron": "^15.0.0"
   }
 }

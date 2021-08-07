@@ -59,7 +59,7 @@ const checkUpdates = (source, window) => {
       const currentVersion = app.getVersion().replace(' ', '');
       const latestVersion = JSON.parse(body).tag_name.replace('v', '');
       const changeLog = JSON.parse(body).body.replace(
-        '<strong>Changelog</strong>',
+        'Changelog',
         'Update available. Here are the changes:\n'
       );
       if(latestVersion !== currentVersion){
