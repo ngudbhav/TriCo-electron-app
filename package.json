@@ -29,8 +29,17 @@
       "icon": "images/icons/mac/icon.icns",
       "darkModeSupport": true
     },
+    "win": {
+      "icon": "images/icons/win/icon.ico"
+    },
     "dmg": {
       "sign": false
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowElevation": true,
+      "allowToChangeInstallationDirectory": true,
+      "license": "LICENSE"
     }
   },
   "dependencies": {
