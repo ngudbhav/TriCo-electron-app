@@ -32,6 +32,11 @@
     "win": {
       "icon": "images/icons/win/icon.ico"
     },
+    "linux": {
+      "target": ["zip", "rpm", "deb"],
+      "icon": "images/icons/png/256x256.png",
+      "category": "Development"
+    },
     "dmg": {
       "sign": false
     },
@@ -40,6 +45,13 @@
       "allowElevation": true,
       "allowToChangeInstallationDirectory": true,
       "license": "LICENSE"
+    },
+    "deb": {
+      "packageCategory": "utils",
+      "priority": "optional"
+    },
+    "rpm": {
+      "packageCategory": "utils"
     }
   },
   "dependencies": {
