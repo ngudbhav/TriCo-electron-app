@@ -53,9 +53,10 @@ Mac OS X | ZIP |  <a href="https://github.com/ngudbhav/TriCo-electron-app/releas
 Mac OS X | Setup |  <a href="https://github.com/ngudbhav/TriCo-electron-app/releases/download/v3.0.0/TriCo-3.0.0.dmg">TriCo-3.0.0.dmg</a>
 <br/>
 
-## Software Featured on Softpedia and Electronjs
+## Software Featured on Softpedia, SourceForge and Electronjs
 <a href="https://www.softpedia.com/get/Internet/Servers/Database-Utils/TriCO.shtml"><img src="images/soft.png" alt="Softpedia" /></a><br><br>
-<a href="https://electronjs.org/apps/trico">Electronjs Link</a>
+[![Download Trico-electron-app](https://a.fsdn.com/con/app/sf-download-button)](https://sourceforge.net/projects/trico/files/latest/download)<br>
+<a href="https://electronjs.org/apps/trico">Electronjs</a>
 
 ## Do rate and give Feedback!
 
