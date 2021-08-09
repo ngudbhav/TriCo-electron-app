@@ -39,12 +39,19 @@ npm start
 ```
 
 ## Installing The App
-```sh
-Setup.exe => Full Windows install
-Portable.exe => Unzip and run the exe.
-Setup.deb => Installable on Debian distributions (Ubuntu, Kali, etc.)
-Setup.rpm => Installable on Red Hat distributions (Fedora, etc.) 
-```
+
+OS | Installer? | File
+--- | --- | ---
+Windows 32-BIT | Portable |  <a href="https://github.com/ngudbhav/TriCo-electron-app/releases/download/v3.0.0/Portable-x86.exe">Portable-x86.exe</a>
+Windows 32-BIT | Setup |  <a href="https://github.com/ngudbhav/TriCo-electron-app/releases/download/v3.0.0/Setup-x86.exe">Setup-x86.exe</a>
+Windows 64-BIT | Portable |  <a href="https://github.com/ngudbhav/TriCo-electron-app/releases/download/v3.0.0/Portable-x64.exe">Portable-x86.exe</a>
+Windows 64-BIT | Setup |  <a href="https://github.com/ngudbhav/TriCo-electron-app/releases/download/v3.0.0/Setup-x64.exe">Setup-x86.exe</a>
+Linux | ZIP |  <a href="https://github.com/ngudbhav/TriCo-electron-app/releases/download/v3.0.0/TriCo-3.0.0-linux.zip">TriCo-3.0.0-linux.zip</a>
+Linux Debian (Ubuntu, etc.) | Setup |  <a href="https://github.com/ngudbhav/TriCo-electron-app/releases/download/v3.0.0/TriCo_3.0.0_amd64.deb">TriCo_3.0.0_amd64.deb</a>
+Linux Redhat (Fedora, etc.) | Setup |  <a href="https://github.com/ngudbhav/TriCo-electron-app/releases/download/v3.0.0/TriCo-3.0.0.x86_64.rpm">TriCo-3.0.0.x86_64.rpm</a>
+Mac OS X | ZIP |  <a href="https://github.com/ngudbhav/TriCo-electron-app/releases/download/v3.0.0/TriCo-3.0.0-mac.zip">TriCo-3.0.0-mac.zip</a>
+Mac OS X | Setup |  <a href="https://github.com/ngudbhav/TriCo-electron-app/releases/download/v3.0.0/TriCo-3.0.0.dmg">TriCo-3.0.0.dmg</a>
+<br/>
 
 ## Software Featured on Softpedia and Electronjs
 <a href="https://www.softpedia.com/get/Internet/Servers/Database-Utils/TriCO.shtml"><img src="images/soft.png" alt="Softpedia" /></a><br><br>
