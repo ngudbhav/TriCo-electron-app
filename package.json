@@ -55,17 +55,16 @@
     }
   },
   "dependencies": {
-    "custom-electron-titlebar": "^3.2.7",
-    "excel-to-mongodb": "^1.6.1",
-    "excel-to-mysql": "^2.6.2",
-    "mongoose": "^5.13.5",
+    "custom-electron-titlebar": "^4.1.1",
+    "excel-to-mongodb": "^2.6.1",
+    "excel-to-mysql": "^2.6.3",
+    "mongoose": "^6.7.0",
     "mysql": "^2.18.1",
     "nedb": "^1.8.0",
     "node-fetch": "^2.6.1"
   },
   "devDependencies": {
-    "electron": "^13.1.7",
-    "electron-builder": "^22.11.11",
-    "spectron": "^15.0.0"
+    "electron": "^21.2.0",
+    "electron-builder": "^23.6.0"
   }
 }

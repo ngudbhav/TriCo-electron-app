@@ -4,6 +4,7 @@ const {
 const path = require('path');
 const excelToMongoDB = require('excel-to-mongodb');
 const excelToMYSQL = require('excel-to-mysql');
+const { setupTitlebar, attachTitlebarToWindow } = require('custom-electron-titlebar/main');
 
 const historyDb = require('./models/history');
 const mysqlDb = require('./models/mysql');
@@ -17,24 +18,23 @@ const {
 let mainWindow;
 //Create the main window
 const createWindow = () => {
+  setupTitlebar();
   mainWindow = new BrowserWindow({
     backgroundColor: nativeTheme.shouldUseDarkColors ? '#333333' : '#ffffff',
     width: 1200, height: 800,
     frame: process.platform === 'darwin',
+    titleBarStyle: 'hidden',
     webPreferences: {
-      devTools: false,
-      nodeIntegration: false,
-      nodeIntegrationInWorker: false,
-      nodeIntegrationInSubFrames: false,
-      contextIsolation: true,
-      enableRemoteModule: true,
+      devTools: true,
+      sandbox: false,
       preload: path.join(__dirname, '../web', 'preload.js'),
       disableBlinkFeatures: "Auxclick",
     }
   });
   mainWindow.loadFile(path.join(__dirname, '../web', 'index.html')).then();
   mainWindow.removeMenu();
-  // mainWindow.webContents.openDevTools()
+  mainWindow.webContents.openDevTools();
+  attachTitlebarToWindow(mainWindow);
 
   // Send history and other data after window is loaded. Also check for updates.
   mainWindow.on('ready-to-show', () => {
