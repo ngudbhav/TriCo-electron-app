@@ -1,6 +1,6 @@
 {
   "name": "TriCo",
-  "version": "3.0.0",
+  "version": "3.1.0",
   "description": "Convert any Excel file to your MYSQL/MongoDB Data",
   "main": "src/main.js",
   "scripts": {
@@ -60,8 +60,7 @@
     "excel-to-mysql": "^2.6.3",
     "mongoose": "^6.7.0",
     "mysql": "^2.18.1",
-    "nedb": "^1.8.0",
-    "node-fetch": "^2.6.1"
+    "nedb": "^1.8.0"
   },
   "devDependencies": {
     "electron": "^21.2.0",

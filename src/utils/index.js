@@ -1,5 +1,4 @@
-const { app, dialog, shell } = require('electron');
-const request = require('node-fetch');
+const { app, dialog, shell, net } = require('electron');
 
 const historyDb = require('../models/history');
 
@@ -49,12 +48,11 @@ const handleCredAndHistory = (database, destination, data) => {
 //Function to check for updates of app
 //Refer here https://gist.github.com/ngudbhav/7e9d429229fc78644c44d58f78dc5bda
 const checkUpdates = (source, window) => {
-  request(
-    'https://api.github.com/repos/ngudbhav/TriCo-electron-app/releases/latest',
-    {headers: { 'User-Agent':'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:59.0) Gecko/20100101 ' }}
-  )
-    .then(res => res.text())
-    .then(body => {
+  const request = net.request({
+    url: 'https://api.github.com/repos/ngudbhav/TriCo-electron-app/releases/latest',
+  });
+  request.on('response', response => {
+    response.on('data', body => {
       // Add error handler to send failure to renderer
       const currentVersion = app.getVersion().replace(' ', '');
       const latestVersion = JSON.parse(body).tag_name.replace('v', '');
@@ -88,6 +86,9 @@ const checkUpdates = (source, window) => {
       }
       window.webContents.send('updateCheckup', null);
     });
+  });
+  request.setHeader('User-Agent', 'Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:59.0) Gecko/20100101 ');
+  request.end()
 };
 
 const showMessageDialogBox = (options, callback = () => {}) => {

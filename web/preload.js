@@ -19,9 +19,7 @@ contextBridge.exposeInMainWorld(
 );
 
 window.addEventListener('DOMContentLoaded', () => {
-  console.log(process.platform);
   if (process.platform !== 'darwin') {
-    console.log('Init Titlebar');
     new Titlebar({
       backgroundColor: Color.fromHex('#0069d9'),
       icon: '../images/icons/png/1024x1024.png',
