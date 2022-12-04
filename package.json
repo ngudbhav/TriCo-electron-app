@@ -33,7 +33,11 @@
       "icon": "images/icons/win/icon.ico"
     },
     "linux": {
-      "target": ["zip", "rpm", "deb"],
+      "target": [
+        "zip",
+        "rpm",
+        "deb"
+      ],
       "icon": "images/icons/png/256x256.png",
       "category": "Development"
     },
@@ -63,7 +67,7 @@
     "nedb": "^1.8.0"
   },
   "devDependencies": {
-    "electron": "^21.2.0",
+    "electron": "^22.0.0",
     "electron-builder": "^23.6.0"
   }
 }
