@@ -40,9 +40,9 @@ const handleCredAndHistory = (database, destination, data) => {
   //Remove the previously stored credentials
   database.remove({}, { multi: true });
   //Insert the new credentials
-  database.insert({ table: data.table, db: data.db, host: data.host, user: data.username });
+  database.insert({ table: data.table, db: data.db, port: data.port, host: data.host, user: data.username });
   //Add this transaction as a history
-  historyDb.insert({ table: data.table, db:data.db, files: data.files, time: new Date(), destination: destination });
+  historyDb.insert({ table: data.table, db:data.db, port: data.port, files: data.files, time: new Date(), destination: destination });
 };
 
 //Function to check for updates of app

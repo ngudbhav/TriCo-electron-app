@@ -24,7 +24,7 @@
                 <div class="mysql-container__form-controls-row flex-row">
                   <div class="option-form-group">
                     <input type="checkbox" id="mysql-safe" name="safe">
-                    <label for="mysql-safe">Safe Mode (Affects Speed)</label>
+                    <label for="mysql-safe">Safe Mode (Affects Performance)</label>
                   </div>
                   <div class="option-form-group">
                     <input type="checkbox" id="mysql-custom" name="custom">
@@ -74,6 +74,11 @@
                 <label for="mysql-db" class="form-label">Database</label>
                 <input type="text" id="mysql-db" placeholder="Name of Database" class="form-control">
               </div>
+              <br />
+              <div class="form-group">
+                <label for="mysql-port" class="form-label">Port</label>
+                <input type="text" id="mysql-port" placeholder="3306" class="form-control">
+              </div>
               <br/>
               <div class="form-group">
                 <label for="mysql-user" class="form-label">Username</label>
@@ -110,7 +115,7 @@
                 <div class="mongo-container__form-controls-row flex-row">
                   <div class="option-form-group">
                     <input type="checkbox" id="mongo-safe" name="mongo-safe">
-                    <label for="mongo-safe">Safe Mode (Affects Speed)</label>
+                    <label for="mongo-safe">Safe Mode (Affects Performance)</label>
                   </div>
                   <div class="option-form-group">
                     <input type="checkbox" id="mongo-custom" name="mongo-custom">
@@ -153,6 +158,11 @@
               <div class="form-group">
                 <label for="mongo-db" class="form-label">Database</label>
                 <input type="text" id="mongo-db" placeholder="Name of Database" class="form-control">
+              </div>
+              <br/>
+              <div class="form-group">
+                <label for="mongo-port" class="form-label">Port</label>
+                <input type="text" id="mongo-port" placeholder="27017" class="form-control">
               </div>
               <br/>
               <div class="form-group">
