@@ -110,6 +110,7 @@ ipcMain.on('readXlsForMongo', async (e, item) => {
         path: filePath,
         collection: item.table,
         db: item.db,
+        port: item.port,
         user: item.username,
         pass: item.password,
         endConnection: true,
@@ -172,6 +173,7 @@ ipcMain.on('readXls', async (e, item) => {
           path: filePath,
           table:item.table,
           db:item.db,
+          port:item.port,
         }, options, error => {
           if(error) {
             dialog.showErrorBox('Some Error occurred!', `${error} for file: ${filePath}`);
@@ -194,6 +196,7 @@ ipcMain.on('readXls', async (e, item) => {
           path: filePath,
           table: item.table,
           db: item.db,
+          port: item.port,
           endConnection: true,
         }, options, error => {
           if(error) {

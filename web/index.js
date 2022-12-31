@@ -155,6 +155,7 @@ const collectFormData = type => {
     },
     host: $(`#${type}-host`)[0]?.value,
     db: $(`#${type}-db`)[0]?.value,
+    port: $(`#${type}-port`)[0]?.value,
     username: $(`#${type}-user`)[0]?.value,
     password: $(`#${type}-password`)[0]?.value,
     table: $(`#${type}-table`)[0]?.value,
@@ -183,6 +184,9 @@ const validateForm = type => {
   if (!data.host) {
     data.host = 'localhost';
   }
+  if (!data.port) {
+    data.port = mongo ? 27017 : 3306;
+  }
   if (!data.db) {
     success = false;
     message = 'No Database Name!';
@@ -206,6 +210,7 @@ const populateData = (type, data) => {
   if (data) {
     $(`#${type}-host`)[0].value = data.host || '';
     $(`#${type}-db`)[0].value = data.db || '';
+    $(`#${type}-port`)[0].value = data.port || '';
     $(`#${type}-user`)[0].value = data.user || '';
     $(`#${type}-table`)[0].value = data.table || '';
   }
@@ -224,6 +229,7 @@ const populateHistory = data => {
         <div class="list-group__item-content hide">
           <h5>
             DB: ${history.db}<br />
+            Port: ${history.port}<br />
             Table: ${history.table}<br />
             Files: ${history.files}
           </h5>
