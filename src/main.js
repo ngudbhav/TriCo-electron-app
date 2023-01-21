@@ -25,7 +25,7 @@ const createWindow = () => {
     frame: process.platform === 'darwin',
     titleBarStyle: 'hidden',
     webPreferences: {
-      devTools: true,
+      devTools: false,
       sandbox: false,
       preload: path.join(__dirname, '../web', 'preload.js'),
       disableBlinkFeatures: "Auxclick",
@@ -33,7 +33,7 @@ const createWindow = () => {
   });
   mainWindow.loadFile(path.join(__dirname, '../web', 'index.html')).then();
   mainWindow.removeMenu();
-  mainWindow.webContents.openDevTools();
+  // mainWindow.webContents.openDevTools();
   attachTitlebarToWindow(mainWindow);
 
   // Send history and other data after window is loaded. Also check for updates.
