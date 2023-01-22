@@ -8,11 +8,12 @@
     "pack": "npx electron-builder --dir",
     "dist": "npx electron-builder",
     "start": "electron .",
-    "package-mac": "npx electron-packager . --overwrite --platform=darwin --arch=x64 --icon=images/logo.icns --prune=true --out=release-builds",
+    "package-mac": "npx electron-packager . --overwrite --platform=darwin --arch=x64 --icon=images/icons/mac/icon.icns --prune=true --out=release-builds",
     "package-win": "npx electron-packager . TriCo --overwrite --asar=true --platform=win32 --arch=x64 --icon=images/icons/win/icon.ico --prune=true --out=release-builds --version-string.CompanyName=NGUdbhav --version-string.FileDescription=Application --version-string.ProductName=\"TriCo\"",
     "package-linux": "npx electron-packager . TriCo --overwrite --asar=true --platform=linux --arch=x64 --icon=images/logo.ico --prune=true --out=release-builds",
-    "install-redhat": "electron-installer-redhat --src release-builds/TriCo-linux-x64/ --dest dist/installers/ --arch x86_64",
-    "install-debian": "electron-installer-debian --src release-builds/TriCo-linux-x64/ --dest dist/installers/ --arch amd64"
+    "install-redhat": "npx electron-installer-redhat --src release-builds/TriCo-linux-x64/ --dest dist/installers/ --arch x86_64",
+    "install-debian": "npx electron-installer-debian --src release-builds/TriCo-linux-x64/ --dest dist/installers/ --arch amd64",
+    "install-mac": "npx electron-installer-dmg ./release-builds/TriCo-darwin-x64/TriCo.app TriCo --out=dist/installers/ --icon=images/icons/mac/icon.icns --title=TriCo"
   },
   "author": "Udbhav Gambhir <ngudbhav05@hotmail.com> (https://www.ngudbhav.com)",
   "license": "MIT",
@@ -67,7 +68,6 @@
     "nedb": "^1.8.0"
   },
   "devDependencies": {
-    "electron": "^22.0.3",
-    "electron-builder": "^23.6.0"
+    "electron": "^22.0.3"
   }
 }
